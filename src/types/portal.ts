@@ -48,6 +48,10 @@ export interface DatasetItem {
   variables: { name: string; unit: string; description: string }[];
   sampleData: DatasetTimeSeriesPoint[];
   fileList: { filename: string; size: string; format: string; updated: string }[];
+  relatedExpeditionIds?: string[];
+  relatedStationIds?: string[];
+  relatedKnowledgeIds?: string[];
+  relatedMediaIds?: string[];
 }
 
 export interface ResearchStation {
@@ -71,6 +75,9 @@ export interface ResearchStation {
   };
   parameters: string[];
   imageBg?: string;
+  relatedExpeditionIds?: string[];
+  relatedDatasetIds?: string[];
+  relatedMediaIds?: string[];
 }
 
 export interface PolarExpedition {
@@ -86,6 +93,10 @@ export interface PolarExpedition {
   datasetsCollected: number;
   summary: string;
   status: 'Completed' | 'Ongoing' | 'Planned';
+  relatedDatasetIds?: string[];
+  relatedStationIds?: string[];
+  relatedKnowledgeIds?: string[];
+  relatedMediaIds?: string[];
 }
 
 export interface FilterState {

@@ -1,69 +1,154 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import React from 'react';
+import Link from 'next/link';
+import { Hero } from '@/components/home/Hero';
+import { Stats } from '@/components/home/Stats';
+import { RegionCards } from '@/components/home/RegionCards';
+import { MOCK_DATASETS } from '@/lib/data/datasets';
+import { INDIAN_POLAR_EXPEDITIONS } from '@/lib/data/expeditions';
+import { DatasetCard } from '@/components/datasets/DatasetCard';
+import { Database, ArrowRight, Sparkles, Navigation, Layers, ShieldCheck, ExternalLink } from 'lucide-react';
+
+export default function HomePage() {
+  const featuredDatasets = MOCK_DATASETS.slice(0, 4);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="space-y-0">
+      {/* Hero Section */}
+      <Hero />
+
+      {/* Live Platform Statistics */}
+      <Stats />
+
+      {/* Explore by Region */}
+      <RegionCards />
+
+      {/* Featured Scientific Datasets Section */}
+      <section className="py-16 bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-4 border-b border-slate-200">
+            <div>
+              <div className="flex items-center space-x-2 text-xs font-mono uppercase font-semibold text-sky-700 tracking-wider mb-1">
+                <Database className="w-4 h-4 text-sky-600" />
+                <span>BENCHMARK DATASETS</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                Featured Scientific Datasets
+              </h2>
+            </div>
+            <Link
+              href="/datasets"
+              className="inline-flex items-center space-x-1.5 text-xs font-bold text-sky-700 hover:text-sky-900 transition-colors mt-2 md:mt-0"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              <span>View All 500+ Datasets</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {featuredDatasets.map((dataset) => (
+              <DatasetCard key={dataset.id} dataset={dataset} />
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* Indian Polar Expeditions Timeline Preview */}
+      <section className="py-16 bg-slate-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          
+          <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-800 pb-4">
+            <div>
+              <div className="flex items-center space-x-2 text-xs font-mono uppercase font-bold text-sky-400 mb-1">
+                <Navigation className="w-4 h-4 text-cyan-400" />
+                <span>HISTORICAL & ONGOING MISSIONS</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                Indian Polar Expeditions
+              </h2>
+            </div>
+            <Link
+              href="/expeditions"
+              className="inline-flex items-center space-x-1.5 text-xs font-bold text-sky-400 hover:text-sky-300 transition-colors mt-2 md:mt-0"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <span>Explore Expeditions Timeline</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          {/* Expeditions Timeline Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {INDIAN_POLAR_EXPEDITIONS.slice(0, 3).map((exp) => (
+              <div
+                key={exp.id}
+                className="bg-slate-950/80 border border-slate-800 rounded-xl p-6 space-y-4 hover:border-sky-500/50 transition-all group"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="px-2.5 py-0.5 rounded text-[11px] font-mono font-bold bg-sky-950 text-sky-300 border border-sky-800">
+                    {exp.expeditionNumber}
+                  </span>
+                  <span className="text-xs font-mono text-slate-400">{exp.year}</span>
+                </div>
+
+                <h3 className="text-lg font-bold text-white group-hover:text-sky-300 transition-colors">
+                  {exp.title}
+                </h3>
+
+                <p className="text-xs text-slate-400 line-clamp-3 leading-relaxed">
+                  {exp.summary}
+                </p>
+
+                <div className="pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
+                  <span>{exp.participatingScientists} Scientists</span>
+                  <span className="text-sky-400">{exp.datasetsCollected} Datasets</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* FAIR Principles & Government Mission Callout */}
+      <section className="py-16 bg-slate-50 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white border border-slate-200 rounded-2xl p-8 sm:p-12 shadow-xs flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="space-y-4 max-w-2xl">
+              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-mono font-bold">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>Open Science & FAIR Compliance</span>
+              </div>
+
+              <h3 className="text-2xl font-bold text-slate-900 tracking-tight">
+                National Polar Data Management Framework
+              </h3>
+
+              <p className="text-sm text-slate-600 leading-relaxed">
+                POLARIS adheres strictly to international FAIR principles (Findable, Accessible, Interoperable, Reusable) and ISO 19115 scientific metadata standards. Researchers can cite datasets using persistent DOIs.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+              <Link
+                href="/explore?mode=ai"
+                className="px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs text-center transition-all flex items-center justify-center space-x-2 shadow-sm"
+              >
+                <Sparkles className="w-4 h-4 text-cyan-300" />
+                <span>Try Natural Query AI</span>
+              </Link>
+              <Link
+                href="/about"
+                className="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-bold rounded-xl text-xs text-center transition-all"
+              >
+                <span>Read Data Policy</span>
+              </Link>
+            </div>
+          </div>
         </div>
-      </main>
+      </section>
     </div>
   );
 }
