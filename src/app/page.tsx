@@ -1,17 +1,29 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Hero } from '@/components/home/Hero';
 import { Stats } from '@/components/home/Stats';
 import { RegionCards } from '@/components/home/RegionCards';
 import { MOCK_DATASETS } from '@/lib/data/datasets';
+import { fetchDatasets } from '@/lib/api/portal';
+import { DatasetItem } from '@/types/portal';
 import { INDIAN_POLAR_EXPEDITIONS } from '@/lib/data/expeditions';
 import { DatasetCard } from '@/components/datasets/DatasetCard';
 import { Database, ArrowRight, Sparkles, Navigation, Layers, ShieldCheck, ExternalLink } from 'lucide-react';
 
 export default function HomePage() {
-  const featuredDatasets = MOCK_DATASETS.slice(0, 4);
+  const [datasets, setDatasets] = useState<DatasetItem[]>(MOCK_DATASETS);
+
+  useEffect(() => {
+    fetchDatasets().then((items) => {
+      if (items && items.length > 0) {
+        setDatasets(items);
+      }
+    });
+  }, []);
+
+  const featuredDatasets = datasets.slice(0, 4);
 
   return (
     <div className="space-y-0">

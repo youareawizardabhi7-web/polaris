@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { unifiedSearch, SearchResultItem } from '@/lib/search';
+import { unifiedSearch, SearchResultItem, SearchCounts } from '@/lib/search';
+import { searchPortal } from '@/lib/api/portal';
 import { 
   Search as SearchIcon, 
   X, 
@@ -30,6 +31,10 @@ function SearchContent() {
   const [query, setQuery] = useState(initialQuery);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
 
+  const [resultsData, setResultsData] = useState<{ results: SearchResultItem[]; counts: SearchCounts }>(() => 
+    unifiedSearch(initialQuery, initialCategory)
+  );
+
   useEffect(() => {
     setQuery(searchParams.get('q') || '');
   }, [searchParams]);
@@ -55,10 +60,23 @@ function SearchContent() {
     router.push('/search');
   };
 
-  // Perform search
-  const { results, counts } = useMemo(() => {
-    return unifiedSearch(query, activeCategory);
+  useEffect(() => {
+    let isCancelled = false;
+    if (!query.trim()) {
+      setResultsData({ results: [], counts: { all: 0, dataset: 0, knowledge: 0, media: 0, expedition: 0, station: 0 } });
+      return;
+    }
+    searchPortal(query, activeCategory).then((data) => {
+      if (!isCancelled) {
+        setResultsData(data);
+      }
+    });
+    return () => {
+      isCancelled = true;
+    };
   }, [query, activeCategory]);
+
+  const { results, counts } = resultsData;
 
   const suggestions = [
     '45th Antarctic Expedition',

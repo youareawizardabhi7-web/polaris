@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { MOCK_DATASETS } from '@/lib/data/datasets';
+import { fetchDatasetById } from '@/lib/api/portal';
+import { DatasetItem } from '@/types/portal';
 import { INDIAN_POLAR_EXPEDITIONS } from '@/lib/data/expeditions';
 import { MOCK_KNOWLEDGE_RESOURCES } from '@/lib/data/knowledge';
 import { DatasetVisualization } from '@/components/datasets/DatasetVisualization';
@@ -37,7 +39,20 @@ export default function DatasetDetailPage() {
   const router = useRouter();
   const datasetId = params.id as string;
 
-  const dataset = MOCK_DATASETS.find((d) => d.id === datasetId) || MOCK_DATASETS[0];
+  const initialDataset = useMemo(() => {
+    return MOCK_DATASETS.find((d) => d.id === datasetId) || MOCK_DATASETS[0];
+  }, [datasetId]);
+
+  const [dataset, setDataset] = useState<DatasetItem>(initialDataset);
+
+  useEffect(() => {
+    if (!datasetId) return;
+    fetchDatasetById(datasetId).then((data) => {
+      if (data) {
+        setDataset(data);
+      }
+    });
+  }, [datasetId]);
 
   const [activeTab, setActiveTab] = useState<'overview' | 'metadata' | 'visualization' | 'spatial' | 'files' | 'citation'>('overview');
   const [isCopied, setIsCopied] = useState(false);

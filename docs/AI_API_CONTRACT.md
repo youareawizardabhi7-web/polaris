@@ -95,7 +95,8 @@ This document defines the RESTful JSON contract between the **POLARIS Frontend**
 
 - Set backend URL in `.env.local`:
   ```env
-  NEXT_PUBLIC_API_URL=https://api.polaris.example.org
+  NEXT_PUBLIC_API_URL=https://polar-outreach.onrender.com
+  NEXT_PUBLIC_AI_MOCK=false
   ```
 - To toggle development client-side mock mode:
   ```env

@@ -7,8 +7,9 @@ import { AssistantRequest, AssistantResponse } from '@/types/assistant';
  * or falls back to development mock demonstration mode when NEXT_PUBLIC_AI_MOCK=true.
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
-const IS_MOCK_MODE = process.env.NEXT_PUBLIC_AI_MOCK === 'true' || !process.env.NEXT_PUBLIC_API_URL;
+const DEFAULT_API_URL = 'https://polar-outreach.onrender.com';
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_URL).replace(/\/+$/, '');
+const IS_MOCK_MODE = process.env.NEXT_PUBLIC_AI_MOCK === 'true';
 
 export async function askAssistant(request: AssistantRequest): Promise<AssistantResponse> {
   // If a real backend URL is configured and mock mode is not forced, send POST request
@@ -26,7 +27,15 @@ export async function askAssistant(request: AssistantRequest): Promise<Assistant
         throw new Error(`HTTP Error ${response.status}: Unable to connect to POLARIS AI Service.`);
       }
 
-      const data: AssistantResponse = await response.json();
+      const rawData = await response.json();
+      const data: AssistantResponse = {
+        answer: rawData.answer || rawData.data?.answer || '',
+        sources: Array.isArray(rawData.sources)
+          ? rawData.sources
+          : Array.isArray(rawData.data?.sources)
+          ? rawData.data.sources
+          : [],
+      };
       return data;
     } catch (err: any) {
       console.error('[POLARIS AI Frontend Error]', err);

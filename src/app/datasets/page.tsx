@@ -3,10 +3,11 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { MOCK_DATASETS } from '@/lib/data/datasets';
+import { fetchDatasets } from '@/lib/api/portal';
 import { DatasetCard } from '@/components/datasets/DatasetCard';
 import { DatasetFilters } from '@/components/datasets/DatasetFilters';
 import { NLQuerySearch } from '@/components/datasets/NLQuerySearch';
-import { FilterState, PolarRegion, ScientificDiscipline, DataFormat } from '@/types/portal';
+import { FilterState, PolarRegion, ScientificDiscipline, DataFormat, DatasetItem } from '@/types/portal';
 import { Search, Sparkles, LayoutGrid, List, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
 
 function DatasetsExplorerContent() {
@@ -17,8 +18,17 @@ function DatasetsExplorerContent() {
   const initialStation = searchParams.get('station') || 'All';
   const initialMode = searchParams.get('mode') === 'ai';
 
+  const [allDatasets, setAllDatasets] = useState<DatasetItem[]>(MOCK_DATASETS);
   const [isAIMode, setIsAIMode] = useState(initialMode);
   const [viewStyle, setViewStyle] = useState<'grid' | 'list'>('grid');
+
+  useEffect(() => {
+    fetchDatasets().then((items) => {
+      if (items && items.length > 0) {
+        setAllDatasets(items);
+      }
+    });
+  }, []);
 
   const [filters, setFilters] = useState<FilterState>({
     searchQuery: initialQuery,
@@ -54,7 +64,7 @@ function DatasetsExplorerContent() {
   };
 
   // Filter & Sort Logic
-  const filteredDatasets = MOCK_DATASETS.filter((ds) => {
+  const filteredDatasets = allDatasets.filter((ds) => {
     if (filters.searchQuery) {
       const q = filters.searchQuery.toLowerCase();
       const matchesTitle = ds.title.toLowerCase().includes(q);
