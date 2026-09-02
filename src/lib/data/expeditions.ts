@@ -1,4 +1,5 @@
 import { PolarExpedition } from '@/types/portal';
+export type { PolarExpedition };
 
 export const INDIAN_POLAR_EXPEDITIONS: PolarExpedition[] = [
   {

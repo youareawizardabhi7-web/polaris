@@ -1,7 +1,7 @@
-import { DatasetItem, ResearchStation } from '@/types/portal';
+import { DatasetItem, ResearchStation, PolarExpedition } from '@/types/portal';
 import { MOCK_DATASETS } from '@/lib/data/datasets';
 import { RESEARCH_STATIONS } from '@/lib/data/stations';
-import { INDIAN_POLAR_EXPEDITIONS, PolarExpedition } from '@/lib/data/expeditions';
+import { INDIAN_POLAR_EXPEDITIONS } from '@/lib/data/expeditions';
 import { MOCK_NEWS_ARTICLES, MOCK_VIDEOS } from '@/lib/data/media';
 import { unifiedSearch, SearchResultItem, SearchCounts } from '@/lib/search';
 
