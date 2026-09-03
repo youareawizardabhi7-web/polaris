@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import { 
   Compass, 
   Search, 
-  Globe, 
   UserCheck, 
   Menu, 
   X, 
@@ -17,7 +16,6 @@ import {
   BookOpenText, 
   Newspaper,
   Info,
-  ChevronDown,
   Sparkles
 } from 'lucide-react';
 
@@ -29,8 +27,6 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState('English (EN)');
-  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
 
   const navLinks = [
     { name: 'Explore Data', href: '/explore', icon: Search },
@@ -42,13 +38,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => 
     { name: 'Expeditions', href: '/expeditions', icon: Layers },
     { name: 'Research', href: '/research', icon: BookOpen },
     { name: 'About', href: '/about', icon: Info },
-  ];
-
-  const languages = [
-    { code: 'EN', name: 'English (EN)' },
-    { code: 'HI', name: 'हिन्दी (HI)' },
-    { code: 'FR', name: 'Français (FR)' },
-    { code: 'ES', name: 'Español (ES)' },
   ];
 
   const isActive = (path: string) => {
@@ -145,37 +134,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => 
               <kbd className="hidden xl:inline px-1.5 py-0.5 text-[10px] font-mono bg-slate-100 border border-slate-300 rounded text-slate-500">⌘K</kbd>
             </Link>
 
-            {/* Language Selector Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
-                className="px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-700 hover:bg-slate-100 border border-slate-200 flex items-center space-x-1.5 transition-all"
-              >
-                <Globe className="w-3.5 h-3.5 text-slate-500" />
-                <span>{currentLang.split(' ')[0]}</span>
-                <ChevronDown className="w-3 h-3 text-slate-400" />
-              </button>
-
-              {isLangDropdownOpen && (
-                <div className="absolute right-0 mt-1.5 w-40 bg-white border border-slate-200 rounded-lg shadow-lg py-1 z-50 text-xs">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => {
-                        setCurrentLang(lang.name);
-                        setIsLangDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-1.5 hover:bg-slate-50 flex items-center justify-between ${
-                        currentLang === lang.name ? 'font-semibold text-sky-700 bg-sky-50' : 'text-slate-700'
-                      }`}
-                    >
-                      <span>{lang.name}</span>
-                      {currentLang === lang.name && <span className="w-1.5 h-1.5 rounded-full bg-sky-600"></span>}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
 
             {/* Researcher Portal / Login */}
             <button

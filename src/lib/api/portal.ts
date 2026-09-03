@@ -1,4 +1,4 @@
-import { DatasetItem, ResearchStation, PolarExpedition } from '@/types/portal';
+import { DatasetItem, ResearchStation, PolarExpedition, BackendMapLocation, PolarMapStation, PolarRegion } from '@/types/portal';
 import { MOCK_DATASETS } from '@/lib/data/datasets';
 import { RESEARCH_STATIONS } from '@/lib/data/stations';
 import { INDIAN_POLAR_EXPEDITIONS } from '@/lib/data/expeditions';
@@ -115,26 +115,71 @@ export async function fetchMedia(): Promise<any[]> {
 }
 
 /**
- * Fetch map locations from live backend API
+ * Normalize region string from backend to standard PolarRegion type
  */
-export async function fetchMapLocations(): Promise<any[]> {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/v1/map/locations`, {
-      headers: { 'Content-Type': 'application/json' },
-      next: { revalidate: 60 }
-    });
-    if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-    const json = await res.json();
-    const items = json.data || json;
-    if (Array.isArray(items) && items.length > 0) {
-      return items;
-    }
-    return RESEARCH_STATIONS;
-  } catch (err) {
-    console.warn('[POLARIS API] Failed to fetch live map locations, falling back:', err);
-    return RESEARCH_STATIONS;
-  }
+export function normalizeRegion(reg?: string): PolarRegion {
+  if (!reg) return 'Antarctica';
+  const r = reg.toUpperCase();
+  if (r.includes('ARCTIC')) return 'Arctic';
+  if (r.includes('HIMALAYA')) return 'Himalayas';
+  if (r.includes('SOUTHERN')) return 'Southern Ocean';
+  return 'Antarctica';
 }
+
+/**
+ * Normalize backend map location object to standard PolarMapStation structure
+ */
+export function normalizeMapLocation(item: BackendMapLocation, index: number = 0): PolarMapStation {
+  const isExpedition = item.type === 'expedition';
+  const name = item.title || item.stationName || item.id || 'Polar Observatory';
+  const region = normalizeRegion(item.region);
+  const locationStr = item.location || `${item.lat.toFixed(2)}°, ${item.lng.toFixed(2)}°`;
+  const typeStr = isExpedition ? 'expedition' : 'station';
+
+  // Create guaranteed unique ID across all backend items
+  const baseId = item.id || name.toLowerCase().replace(/\s+/g, '-');
+  const uniqueId = `${typeStr}-${baseId}-${index}`;
+
+  return {
+    id: uniqueId,
+    name,
+    type: typeStr,
+    region,
+    location: locationStr,
+    lat: typeof item.lat === 'number' ? item.lat : Number(item.lat),
+    lng: typeof item.lng === 'number' ? item.lng : Number(item.lng),
+    established: item.established,
+    status: item.status || 'Active',
+    url: item.url || null,
+    description: item.description,
+    photoCount: item.photoCount,
+    paperCount: item.paperCount,
+    coverImage: item.coverImage,
+    agency: item.agency,
+    elevation: item.elevation,
+    rawBackendData: item
+  };
+}
+
+/**
+ * Fetch map locations directly from live backend API
+ */
+export async function fetchMapLocations(): Promise<PolarMapStation[]> {
+  const res = await fetch(`${API_BASE_URL}/api/v1/map/locations`, {
+    headers: { 'Content-Type': 'application/json' },
+    cache: 'no-store'
+  });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch backend map locations: HTTP ${res.status}`);
+  }
+  const json = await res.json();
+  const items: BackendMapLocation[] = json.data || json;
+  if (!Array.isArray(items)) {
+    throw new Error('Invalid backend response: data is not an array');
+  }
+  return items.map((item, index) => normalizeMapLocation(item, index));
+}
+
 
 /**
  * Unified Search querying the live backend API with fallback to local search

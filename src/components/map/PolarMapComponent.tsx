@@ -1,62 +1,144 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { RESEARCH_STATIONS } from '@/lib/data/stations';
-import { ResearchStation, PolarRegion } from '@/types/portal';
-import { MapPin, Compass, Layers, Radio, Thermometer, Wind, Gauge, ExternalLink, Filter, Info, Eye } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import { fetchMapLocations } from '@/lib/api/portal';
+import { PolarMapStation, PolarRegion } from '@/types/portal';
+import {
+  Compass,
+  Layers,
+  Search,
+  Radio,
+  RefreshCw,
+  AlertTriangle,
+  Info,
+  MapPin,
+  SlidersHorizontal
+} from 'lucide-react';
+
+// SSR-safe dynamic import for MapLibre 3D Globe
+const PolarGlobeCanvas = dynamic(
+  () => import('./PolarGlobeCanvas').then((mod) => mod.PolarGlobeCanvas),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[520px] sm:h-[600px] lg:h-[650px] bg-slate-950 rounded-2xl flex flex-col items-center justify-center text-slate-400 font-mono text-xs space-y-3 border border-slate-800">
+        <div className="w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+        <span className="text-cyan-300 font-semibold">Initializing 3D MapLibre Globe...</span>
+      </div>
+    )
+  }
+);
 
 interface PolarMapComponentProps {
   initialStationId?: string;
-  initialRegion?: PolarRegion;
+  initialRegion?: PolarRegion | 'All';
 }
 
 export const PolarMapComponent: React.FC<PolarMapComponentProps> = ({
   initialStationId,
-  initialRegion = 'Antarctica'
+  initialRegion = 'All'
 }) => {
-  const [activeRegion, setActiveRegion] = useState<PolarRegion>(initialRegion);
-  const [selectedStation, setSelectedStation] = useState<ResearchStation>(
-    RESEARCH_STATIONS.find((s) => s.id === initialStationId) || RESEARCH_STATIONS[0]
-  );
+  const [stations, setStations] = useState<PolarMapStation[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const [activeRegion, setActiveRegion] = useState<PolarRegion | 'All'>(initialRegion);
+  const [selectedStationId, setSelectedStationId] = useState<string | null>(initialStationId || null);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const [layers, setLayers] = useState({
     stations: true,
-    datasets: true,
-    routes: true,
-    seaIce: true
+    routes: true
   });
+  const [isAutoRotating, setIsAutoRotating] = useState<boolean>(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
 
-  const filteredStations = RESEARCH_STATIONS.filter((st) => st.region === activeRegion);
+  // Load locations from backend API
+  const loadLocations = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchMapLocations();
+      setStations(data);
 
-  const toggleLayer = (layerKey: keyof typeof layers) => {
-    setLayers((prev) => ({ ...prev, [layerKey]: !prev[layerKey] }));
+      if (initialStationId) {
+        const found = data.find((s) => s.id === initialStationId || s.name.toLowerCase().includes(initialStationId.toLowerCase()));
+        if (found) setSelectedStationId(found.id);
+      } else if (data.length > 0) {
+        setSelectedStationId(data[0].id);
+      }
+    } catch (err: unknown) {
+      console.error('[POLARMAP] Error fetching map locations:', err);
+      const msg = err instanceof Error ? err.message : 'Failed to load polar station locations from backend API';
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  useEffect(() => {
+    let isMounted = true;
+    fetchMapLocations()
+      .then((data) => {
+        if (!isMounted) return;
+        setStations(data);
+        if (initialStationId) {
+          const found = data.find((s) => s.id === initialStationId || s.name.toLowerCase().includes(initialStationId.toLowerCase()));
+          if (found) setSelectedStationId(found.id);
+        } else if (data.length > 0) {
+          setSelectedStationId(data[0].id);
+        }
+        setLoading(false);
+      })
+      .catch((err: unknown) => {
+        if (!isMounted) return;
+        console.error('[POLARMAP] Error fetching map locations:', err);
+        const msg = err instanceof Error ? err.message : 'Failed to load polar station locations from backend API';
+        setError(msg);
+        setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [initialStationId]);
+
+  // Filter stations based on Region & Search Query
+  const filteredStations = stations.filter((st) => {
+    const matchesRegion = activeRegion === 'All' || st.region === activeRegion;
+    const matchesSearch =
+      !searchQuery.trim() ||
+      st.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      st.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      st.region.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesRegion && matchesSearch;
+  });
+
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
+    <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl space-y-0">
       
-      {/* Top Map Toolbar Header */}
-      <div className="bg-slate-950 px-4 sm:px-6 py-3 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3 text-white">
+      {/* Map Control Header Bar */}
+      <div className="bg-slate-950 px-4 sm:px-6 py-3.5 border-b border-slate-800 flex flex-col lg:flex-row lg:items-center justify-between gap-4 text-white">
         
-        {/* Region Projection Tabs */}
-        <div className="flex items-center space-x-2">
+        {/* Region Selector Tabs */}
+        <div className="flex flex-wrap items-center gap-1.5">
           <span className="text-xs font-mono uppercase text-sky-400 font-bold flex items-center space-x-1.5 mr-2">
             <Compass className="w-4 h-4 text-cyan-400" />
-            <span>Polar Projection:</span>
+            <span>Region Focus:</span>
           </span>
-          {(['Antarctica', 'Arctic', 'Himalayas'] as const).map((reg) => (
+          {(['All', 'Arctic', 'Antarctica', 'Southern Ocean', 'Himalayas'] as const).map((reg) => (
             <button
               key={reg}
               onClick={() => {
                 setActiveRegion(reg);
-                const firstRegStation = RESEARCH_STATIONS.find((s) => s.region === reg);
-                if (firstRegStation) setSelectedStation(firstRegStation);
+                const firstInReg = stations.find((s) => reg === 'All' || s.region === reg);
+                if (firstInReg) setSelectedStationId(firstInReg.id);
               }}
-              className={`px-3 py-1 rounded-md text-xs font-semibold font-mono transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-mono transition-all ${
                 activeRegion === reg
-                  ? 'bg-sky-500 text-slate-950 font-bold shadow-sm'
-                  : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                  ? 'bg-gradient-to-r from-sky-500 to-cyan-400 text-slate-950 font-bold shadow-md shadow-cyan-500/20'
+                  : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 hover:border-slate-700'
               }`}
             >
               {reg}
@@ -64,222 +146,171 @@ export const PolarMapComponent: React.FC<PolarMapComponentProps> = ({
           ))}
         </div>
 
-        {/* Map Layers Toggles */}
-        <div className="flex items-center space-x-3 text-xs font-mono text-slate-300">
-          <span className="flex items-center space-x-1 text-slate-400">
-            <Layers className="w-3.5 h-3.5" />
-            <span>Layers:</span>
-          </span>
-          
-          <label className="flex items-center space-x-1.5 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={layers.stations}
-              onChange={() => toggleLayer('stations')}
-              className="rounded bg-slate-800 border-slate-700 text-sky-500 focus:ring-0"
-            />
-            <span className={layers.stations ? 'text-sky-300' : 'text-slate-500'}>Stations</span>
-          </label>
+        {/* Layer Toggles & Controls */}
+        <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-slate-300">
+          <div className="flex items-center space-x-3">
+            <span className="flex items-center space-x-1 text-slate-400">
+              <Layers className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Layers:</span>
+            </span>
 
-          <label className="flex items-center space-x-1.5 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={layers.routes}
-              onChange={() => toggleLayer('routes')}
-              className="rounded bg-slate-800 border-slate-700 text-sky-500 focus:ring-0"
-            />
-            <span className={layers.routes ? 'text-emerald-300' : 'text-slate-500'}>Routes</span>
-          </label>
+            <label className="flex items-center space-x-1.5 cursor-pointer hover:text-white transition-colors">
+              <input
+                type="checkbox"
+                checked={layers.stations}
+                onChange={() => setLayers((p) => ({ ...p, stations: !p.stations }))}
+                className="rounded bg-slate-800 border-slate-700 text-cyan-500 focus:ring-0"
+              />
+              <span className={layers.stations ? 'text-cyan-300 font-semibold' : 'text-slate-500'}>Observatories</span>
+            </label>
 
-          <label className="flex items-center space-x-1.5 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={layers.seaIce}
-              onChange={() => toggleLayer('seaIce')}
-              className="rounded bg-slate-800 border-slate-700 text-sky-500 focus:ring-0"
-            />
-            <span className={layers.seaIce ? 'text-cyan-300' : 'text-slate-500'}>Sea Ice</span>
-          </label>
+            <label className="flex items-center space-x-1.5 cursor-pointer hover:text-white transition-colors">
+              <input
+                type="checkbox"
+                checked={layers.routes}
+                onChange={() => setLayers((p) => ({ ...p, routes: !p.routes }))}
+                className="rounded bg-slate-800 border-slate-700 text-cyan-500 focus:ring-0"
+              />
+              <span className={layers.routes ? 'text-emerald-300 font-semibold' : 'text-slate-500'}>Routes</span>
+            </label>
+          </div>
+
+          <button
+            onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+            className="lg:hidden px-2.5 py-1 rounded bg-slate-800 text-cyan-400 border border-slate-700 flex items-center space-x-1 text-xs"
+          >
+            <SlidersHorizontal className="w-3.5 h-3.5" />
+            <span>Explorer ({filteredStations.length})</span>
+          </button>
         </div>
 
       </div>
 
-      {/* Main Map Body: Interactive Canvas / Vector Grid with Station Nodes */}
-      <div className="relative h-[480px] sm:h-[540px] w-full bg-slate-950 flex items-center justify-center p-4 sm:p-8 overflow-hidden">
+      {/* Main Map Body: Grid with 3D Globe + Explorer Sidebar */}
+      <div className="relative flex flex-col lg:flex-row w-full min-h-[550px] bg-slate-950 overflow-hidden">
         
-        {/* Polar Circular Projection Grid Backdrop */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
-          <div className="w-[520px] h-[520px] rounded-full border border-sky-400"></div>
-          <div className="absolute w-[380px] h-[380px] rounded-full border border-sky-400/80"></div>
-          <div className="absolute w-[240px] h-[240px] rounded-full border border-sky-400/60"></div>
-          <div className="absolute w-[100px] h-[100px] rounded-full border border-sky-400/40 bg-sky-950"></div>
-          <div className="absolute w-full h-[1px] bg-sky-400/20"></div>
-          <div className="absolute h-full w-[1px] bg-sky-400/20"></div>
-        </div>
-
-        {/* Sea Ice Boundary Simulation Overlay */}
-        {layers.seaIce && (
-          <div className="absolute w-[440px] h-[440px] rounded-full border-2 border-dashed border-cyan-400/40 bg-cyan-950/10 pointer-events-none animate-pulse"></div>
+        {/* Loading State Overlay */}
+        {loading && (
+          <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-sm z-40 flex flex-col items-center justify-center p-6 text-center space-y-4">
+            <div className="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin shadow-lg shadow-cyan-500/20"></div>
+            <div className="space-y-1">
+              <h4 className="text-base font-bold text-white font-mono">Fetching Live Station Observatories</h4>
+              <p className="text-xs text-slate-400 font-mono">Connecting to backend API at polar-outreach.onrender.com...</p>
+            </div>
+          </div>
         )}
 
-        {/* Simulated Expedition Cruise Routes */}
-        {layers.routes && (
-          <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40">
-            <path
-              d="M 150 400 Q 300 250 500 180 T 700 350"
-              fill="none"
-              stroke="#34d399"
-              strokeWidth="2"
-              strokeDasharray="6 4"
-            />
-          </svg>
+        {/* Error State Overlay */}
+        {error && !loading && (
+          <div className="absolute inset-0 bg-slate-950/95 z-40 flex flex-col items-center justify-center p-6 text-center space-y-4">
+            <div className="w-14 h-14 rounded-full bg-red-950/80 border border-red-800 flex items-center justify-center text-red-400 shadow-xl">
+              <AlertTriangle className="w-7 h-7" />
+            </div>
+            <div className="space-y-1 max-w-md">
+              <h4 className="text-lg font-bold text-white font-mono">Backend Connection Failed</h4>
+              <p className="text-xs text-slate-400 font-mono leading-relaxed">{error}</p>
+            </div>
+            <button
+              onClick={loadLocations}
+              className="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold font-mono rounded-lg text-xs transition-all flex items-center space-x-2 shadow-lg shadow-sky-500/20"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span>Retry API Fetch</span>
+            </button>
+          </div>
         )}
 
-        {/* Station Markers on Map Canvas */}
-        {layers.stations && (
-          <div className="relative w-full h-full max-w-4xl max-h-[460px]">
-            {filteredStations.map((st, index) => {
-              const isSelected = selectedStation.id === st.id;
-              
-              // Position math simulation for demonstration
-              const positions = [
-                { top: '35%', left: '30%' },
-                { top: '62%', left: '72%' },
-                { top: '25%', left: '55%' },
-                { top: '70%', left: '38%' }
-              ];
-              const pos = positions[index % positions.length];
+        {/* 3D Globe Visualization Canvas */}
+        <div className="flex-1 relative w-full h-[520px] sm:h-[600px] lg:h-[650px]">
+          <PolarGlobeCanvas
+            stations={filteredStations}
+            selectedStationId={selectedStationId}
+            onSelectStation={(st) => setSelectedStationId(st.id)}
+            activeRegion={activeRegion}
+            showStationsLayer={layers.stations}
+            showRoutesLayer={layers.routes}
+            isAutoRotating={isAutoRotating}
+            onToggleAutoRotate={() => setIsAutoRotating(!isAutoRotating)}
+          />        </div>
 
-              return (
-                <div
-                  key={st.id}
-                  style={{ top: pos.top, left: pos.left }}
-                  onClick={() => setSelectedStation(st)}
-                  className="absolute cursor-pointer transform -translate-x-1/2 -translate-y-1/2 group z-20"
-                >
-                  <div className="relative flex flex-col items-center">
-                    {/* Pulsing Beacon */}
-                    <span className={`w-4 h-4 rounded-full absolute -top-1 animate-ping ${isSelected ? 'bg-sky-400' : 'bg-cyan-400/60'}`}></span>
-                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shadow-lg transition-transform group-hover:scale-125 ${
+        {/* Station Explorer Sidebar (Desktop & Responsive Mobile Collapsible) */}
+        <div className={`w-full lg:w-80 bg-slate-900 border-t lg:border-t-0 lg:border-l border-slate-800 flex flex-col h-[400px] lg:h-[650px] transition-all ${
+          isMobileSidebarOpen ? 'block' : 'hidden lg:flex'
+        }`}>
+          
+          {/* Sidebar Search Bar */}
+          <div className="p-3.5 border-b border-slate-800 space-y-2.5 bg-slate-950">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-mono uppercase font-bold text-slate-300 flex items-center space-x-1.5">
+                <Radio className="w-4 h-4 text-cyan-400" />
+                <span>Station Explorer</span>
+              </span>
+              <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-950 text-cyan-300 border border-cyan-800 font-bold">
+                {filteredStations.length} Listed
+              </span>
+            </div>
+
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search observatories..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-3 py-1.5 bg-slate-900 border border-slate-700/80 rounded-lg text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+              />
+            </div>
+          </div>
+
+          {/* Station Cards List */}
+          <div className="flex-1 overflow-y-auto p-3 space-y-2.5 scrollbar-thin scrollbar-thumb-slate-700">
+            {filteredStations.length === 0 ? (
+              <div className="p-8 text-center space-y-2">
+                <Info className="w-6 h-6 mx-auto text-slate-600" />
+                <p className="text-xs font-mono text-slate-400">No observatories found matching criteria.</p>
+              </div>
+            ) : (
+              filteredStations.map((st, index) => {
+                const isSelected = selectedStationId === st.id;
+                return (
+                  <div
+                    key={`${st.id}-${index}`}
+                    onClick={() => setSelectedStationId(st.id)}
+                    className={`p-3 rounded-xl border transition-all cursor-pointer space-y-1.5 ${
                       isSelected
-                        ? 'bg-sky-400 border-white text-slate-950 scale-110'
-                        : 'bg-slate-900 border-sky-400 text-sky-400'
-                    }`}>
-                      <MapPin className="w-3.5 h-3.5" />
+                        ? 'bg-slate-800 border-cyan-400/80 text-white shadow-lg shadow-cyan-950/50'
+                        : 'bg-slate-950/60 border-slate-800/80 hover:border-slate-700 text-slate-300 hover:bg-slate-950'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <h5 className="text-xs font-bold font-mono text-white group-hover:text-cyan-300">
+                        {st.name}
+                      </h5>
+                      <span className={`px-1.5 py-0.2 rounded text-[9px] font-mono font-bold whitespace-nowrap ${
+                        st.type === 'expedition' ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : 'bg-cyan-950 text-cyan-300 border border-cyan-800'
+                      }`}>
+                        {st.region}
+                      </span>
                     </div>
 
-                    {/* Station Name Label Tag */}
-                    <div className={`mt-1.5 px-2.5 py-1 rounded text-[11px] font-mono font-bold whitespace-nowrap shadow-xl border transition-all ${
-                      isSelected
-                        ? 'bg-sky-400 text-slate-950 border-white'
-                        : 'bg-slate-900/90 text-sky-300 border-slate-700 group-hover:border-sky-400'
-                    }`}>
-                      {st.name}
+                    <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed font-sans">
+                      {st.location}
+                    </p>
+
+                    <div className="flex items-center justify-between pt-1 border-t border-slate-800/60 text-[10px] font-mono text-slate-400">
+                      <span className="flex items-center space-x-1">
+                        <MapPin className="w-3 h-3 text-cyan-400" />
+                        <span>{st.lat.toFixed(2)}°, {st.lng.toFixed(2)}°</span>
+                      </span>
+                      {st.established && <span>Est. {st.established}</span>}
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
-        )}
 
-        {/* Selected Station Floating Popup Card */}
-        {selectedStation && (
-          <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 w-80 sm:w-96 bg-slate-900/95 border border-slate-700/90 rounded-xl p-4 shadow-2xl backdrop-blur-md text-white z-30 space-y-3">
-            
-            {/* Header */}
-            <div className="flex items-start justify-between border-b border-slate-800 pb-2">
-              <div>
-                <span className="text-[10px] font-mono uppercase text-sky-400 font-bold block">
-                  {selectedStation.agency}
-                </span>
-                <h4 className="text-base font-bold text-white font-mono">
-                  {selectedStation.name}
-                </h4>
-                {selectedStation.nativeName && (
-                  <span className="text-xs text-slate-400 block">{selectedStation.nativeName}</span>
-                )}
-              </div>
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950 text-emerald-300 border border-emerald-800">
-                {selectedStation.status}
-              </span>
-            </div>
-
-            {/* Coordinates & Elevation */}
-            <div className="grid grid-cols-2 gap-2 text-xs font-mono text-slate-300 bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-              <div>
-                <span className="text-[10px] text-slate-500 block">COORDINATES</span>
-                <span className="text-sky-300 font-semibold">{selectedStation.coordinates.lat}°, {selectedStation.coordinates.lng}°</span>
-              </div>
-              <div>
-                <span className="text-[10px] text-slate-500 block">ELEVATION</span>
-                <span className="text-sky-300 font-semibold">{selectedStation.elevation}</span>
-              </div>
-            </div>
-
-            {/* Live Observation */}
-            <div className="space-y-1">
-              <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">
-                Latest Station Observation ({selectedStation.latestObservation.updatedAt}):
-              </span>
-              <div className="grid grid-cols-3 gap-2 text-center text-xs font-mono">
-                <div className="bg-slate-800/80 border border-slate-700 p-2 rounded">
-                  <Thermometer className="w-3.5 h-3.5 mx-auto text-sky-400 mb-1" />
-                  <span className="font-bold text-white block">{selectedStation.latestObservation.temp}</span>
-                  <span className="text-[9px] text-slate-400">Temp</span>
-                </div>
-                <div className="bg-slate-800/80 border border-slate-700 p-2 rounded">
-                  <Wind className="w-3.5 h-3.5 mx-auto text-cyan-400 mb-1" />
-                  <span className="font-bold text-white block">{selectedStation.latestObservation.wind}</span>
-                  <span className="text-[9px] text-slate-400">Wind</span>
-                </div>
-                <div className="bg-slate-800/80 border border-slate-700 p-2 rounded">
-                  <Gauge className="w-3.5 h-3.5 mx-auto text-indigo-400 mb-1" />
-                  <span className="font-bold text-white block">{selectedStation.latestObservation.pressure}</span>
-                  <span className="text-[9px] text-slate-400">Pressure</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Connected Knowledge Graph Links */}
-            <div className="pt-2 border-t border-slate-800 space-y-1.5 text-xs font-mono">
-              <span className="text-[10px] text-slate-400 font-bold uppercase block">Station Knowledge Graph:</span>
-              <div className="flex flex-wrap items-center gap-1.5">
-                {selectedStation.relatedExpeditionIds && selectedStation.relatedExpeditionIds.length > 0 && (
-                  <Link href="/expeditions" className="px-2 py-1 rounded bg-purple-950/80 text-purple-300 border border-purple-800 hover:bg-purple-900 transition-colors text-[10px]">
-                    {selectedStation.relatedExpeditionIds.length} Expeditions
-                  </Link>
-                )}
-                {selectedStation.relatedDatasetIds && selectedStation.relatedDatasetIds.length > 0 && (
-                  <Link href={`/datasets/${selectedStation.relatedDatasetIds[0]}`} className="px-2 py-1 rounded bg-sky-950/80 text-sky-300 border border-sky-800 hover:bg-sky-900 transition-colors text-[10px]">
-                    {selectedStation.relatedDatasetIds[0]}
-                  </Link>
-                )}
-                {selectedStation.relatedMediaIds && selectedStation.relatedMediaIds.length > 0 && (
-                  <Link href="/media" className="px-2 py-1 rounded bg-rose-950/80 text-rose-300 border border-rose-800 hover:bg-rose-900 transition-colors text-[10px]">
-                    {selectedStation.relatedMediaIds.length} Media Stories
-                  </Link>
-                )}
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
-              <span className="text-xs text-slate-400 font-mono">
-                <strong className="text-sky-300">{selectedStation.availableDatasetsCount}</strong> Datasets
-              </span>
-
-              <Link
-                href={`/explore?station=${encodeURIComponent(selectedStation.name)}`}
-                className="px-3 py-1.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-lg text-xs tracking-wide transition-all flex items-center space-x-1 shadow-md"
-              >
-                <span>Explore Datasets</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-          </div>
-        )}
+        </div>
 
       </div>
 

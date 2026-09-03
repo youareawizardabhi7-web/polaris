@@ -1,108 +1,159 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { PolarMapComponent } from '@/components/map/PolarMapComponent';
-import { RESEARCH_STATIONS } from '@/lib/data/stations';
-import { Navigation, Compass, MapPin, Radio, Layers, Info } from 'lucide-react';
+import { fetchMapLocations } from '@/lib/api/portal';
+import { PolarMapStation } from '@/types/portal';
+import { Navigation, Radio, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 
 function MapPageContent() {
   const searchParams = useSearchParams();
   const stationId = searchParams.get('station') || undefined;
 
+  const [stations, setStations] = useState<PolarMapStation[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchMapLocations()
+      .then((data) => {
+        if (isMounted) {
+          setStations(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error('[MAP PAGE] Failed to load stations:', err);
+        if (isMounted) setLoading(false);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
+    <div className="min-h-screen bg-slate-50 py-8 text-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         
-        {/* Header */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
+        {/* Header (Light Mode POLARIS Design) */}
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <div className="flex items-center space-x-2 text-xs font-mono uppercase font-bold text-sky-700 mb-1">
               <Navigation className="w-4 h-4 text-cyan-600" />
               <span>POLAR SPATIAL INFRASTRUCTURE</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Interactive Polar Map & Station Portal
+              3D Scientific Polar Globe & Observatories
             </h1>
-            <p className="text-xs text-slate-500 mt-1">
-              Explore active research observatories, deep-sea moorings, expedition transects, and spatial dataset points.
+            <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
+              Interactive 3D Earth globe visualization powered by MapLibre GL JS and live backend telemetry from NCPOR, MoES, and international polar stations.
             </p>
           </div>
 
-          <div className="flex items-center space-x-2 text-xs font-mono bg-slate-100 p-2.5 rounded-xl border border-slate-200">
+          <div className="flex items-center space-x-2 text-xs font-mono bg-slate-100 p-3 rounded-xl border border-slate-200 shrink-0">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="font-bold text-slate-800">6 Active Station Observatories</span>
+            <span className="font-bold text-slate-800">
+              {loading ? 'Connecting...' : `${stations.length} Backend Locations`}
+            </span>
           </div>
         </div>
 
-        {/* Map Component Container */}
+        {/* 3D Globe Map Container */}
         <PolarMapComponent initialStationId={stationId} />
 
-        {/* Research Stations Grid */}
+        {/* Research Observatories Grid */}
         <div className="space-y-4 pt-4">
           <div className="flex items-center justify-between border-b border-slate-200 pb-3">
             <h2 className="text-lg font-bold text-slate-900 flex items-center space-x-2">
               <Radio className="w-5 h-5 text-sky-600" />
-              <span>National Polar Research Stations</span>
+              <span>Backend Research Observatories & Expeditions</span>
             </h2>
-            <span className="text-xs font-mono text-slate-500">NCPOR & MoES Observatories</span>
+            <span className="text-xs font-mono text-slate-500">Source: GET /api/v1/map/locations</span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {RESEARCH_STATIONS.map((station) => (
-              <div
-                key={station.id}
-                className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs hover:shadow-md hover:border-sky-300 transition-all flex flex-col justify-between"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="px-2.5 py-0.5 rounded text-xs font-bold font-mono bg-sky-100 text-sky-800 border border-sky-200">
-                      {station.region}
-                    </span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                      Established {station.established}
-                    </span>
-                  </div>
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs space-y-3 animate-pulse">
+                  <div className="h-4 bg-slate-200 rounded w-1/3"></div>
+                  <div className="h-6 bg-slate-200 rounded w-2/3"></div>
+                  <div className="h-12 bg-slate-100 rounded"></div>
+                </div>
+              ))}
+            </div>
+          ) : stations.length === 0 ? (
+            <div className="bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-500 text-xs font-mono">
+              No station locations available from the backend API.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {stations.map((station, index) => (
+                <div
+                  key={`${station.id}-${index}`}
+                  className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs hover:shadow-md hover:border-sky-300 transition-all flex flex-col justify-between"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="px-2.5 py-0.5 rounded text-xs font-bold font-mono bg-sky-100 text-sky-800 border border-sky-200">
+                        {station.region}
+                      </span>
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                        station.type === 'expedition' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-700 border border-slate-200'
+                      }`}>
+                        {station.type.toUpperCase()}
+                      </span>
+                    </div>
 
-                  <div>
-                    <h3 className="text-base font-bold text-slate-900">{station.name}</h3>
-                    {station.nativeName && (
-                      <span className="text-xs text-slate-500">{station.nativeName}</span>
+                    <div>
+                      <h3 className="text-base font-bold text-slate-900">{station.name}</h3>
+                      <p className="text-xs text-slate-500 mt-0.5 font-mono">{station.location}</p>
+                    </div>
+
+                    {station.description && (
+                      <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                        {station.description}
+                      </p>
                     )}
+
+                    <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-xs font-mono text-slate-700 space-y-1">
+                      <div className="flex justify-between">
+                        <span className="text-slate-400">Coordinates:</span>
+                        <strong className="text-sky-700">{station.lat.toFixed(4)}°, {station.lng.toFixed(4)}°</strong>
+                      </div>
+                      {station.established && (
+                        <div className="flex justify-between">
+                          <span className="text-slate-400">Established:</span>
+                          <strong>{station.established}</strong>
+                        </div>
+                      )}
+                      {station.status && (
+                        <div className="flex justify-between">
+                          <span className="text-slate-400">Status:</span>
+                          <strong className="text-emerald-700">{station.status}</strong>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
-                  <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-                    {station.description}
-                  </p>
+                  <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span className="text-xs font-mono text-slate-500">
+                      ID: <strong className="text-slate-900">{station.id}</strong>
+                    </span>
 
-                  <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-xs font-mono text-slate-700 space-y-1">
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Lat/Lng:</span>
-                      <strong>{station.coordinates.lat}°, {station.coordinates.lng}°</strong>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-400">Latest Temp:</span>
-                      <strong className="text-sky-700">{station.latestObservation.temp}</strong>
-                    </div>
+                    <Link
+                      href={station.url || `/explore?station=${encodeURIComponent(station.name)}`}
+                      className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-lg text-xs transition-all inline-flex items-center space-x-1"
+                    >
+                      <span>Explore</span>
+                      <ExternalLink className="w-3 h-3 ml-1" />
+                    </Link>
                   </div>
                 </div>
-
-                <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-xs font-mono text-slate-500">
-                    <strong className="text-slate-900">{station.availableDatasetsCount}</strong> Datasets
-                  </span>
-
-                  <Link
-                    href={`/explore?station=${encodeURIComponent(station.name)}`}
-                    className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-lg text-xs transition-all"
-                  >
-                    Browse Datasets
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
       </div>

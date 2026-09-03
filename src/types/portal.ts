@@ -80,6 +80,47 @@ export interface ResearchStation {
   relatedMediaIds?: string[];
 }
 
+export interface BackendMapLocation {
+  id: string;
+  type?: 'station' | 'expedition' | string;
+  title?: string;
+  stationName?: string;
+  lat: number;
+  lng: number;
+  region?: string;
+  location?: string;
+  established?: number;
+  status?: string;
+  url?: string | null;
+  description?: string;
+  photoCount?: number;
+  paperCount?: number;
+  coverImage?: string | null;
+  agency?: string;
+  elevation?: string;
+}
+
+export interface PolarMapStation {
+  id: string;
+  name: string;
+  type: 'station' | 'expedition';
+  region: PolarRegion;
+  location: string;
+  lat: number;
+  lng: number;
+  established?: number;
+  status: string;
+  url?: string | null;
+  description?: string;
+  photoCount?: number;
+  paperCount?: number;
+  coverImage?: string | null;
+  agency?: string;
+  elevation?: string;
+  rawBackendData?: BackendMapLocation;
+}
+
+
 export interface PolarExpedition {
   id: string;
   title: string;
