@@ -190,9 +190,9 @@ export const Hero: React.FC = () => {
                       className="absolute top-16 left-20 cursor-pointer group"
                     >
                       <div className="relative flex items-center space-x-2">
-                        <span className="w-3 h-3 rounded-full bg-cyan-400 animate-ping absolute"></span>
-                        <span className="w-3 h-3 rounded-full bg-cyan-400 border border-white"></span>
-                        <div className="bg-slate-900/90 border border-cyan-500/50 text-cyan-300 text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-cyan-400">
+                        <span className="w-3 h-3 rounded-full bg-white animate-ping absolute"></span>
+                        <span className="w-3 h-3 rounded-full bg-white border border-slate-900"></span>
+                        <div className="bg-slate-950/95 border border-slate-700 text-white font-bold text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-white transition-colors">
                           Maitri Station (-70.77°, 11.73°)
                         </div>
                       </div>
@@ -204,9 +204,9 @@ export const Hero: React.FC = () => {
                       className="absolute bottom-20 right-16 cursor-pointer group"
                     >
                       <div className="relative flex items-center space-x-2">
-                        <span className="w-3 h-3 rounded-full bg-sky-400 animate-ping absolute"></span>
-                        <span className="w-3 h-3 rounded-full bg-sky-400 border border-white"></span>
-                        <div className="bg-slate-900/90 border border-sky-500/50 text-sky-300 text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-sky-400">
+                        <span className="w-3 h-3 rounded-full bg-white animate-ping absolute"></span>
+                        <span className="w-3 h-3 rounded-full bg-white border border-slate-900"></span>
+                        <div className="bg-slate-950/95 border border-slate-700 text-white font-bold text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-white transition-colors">
                           Bharati Station (-69.41°, 76.19°)
                         </div>
                       </div>
@@ -216,7 +216,7 @@ export const Hero: React.FC = () => {
                     <div className="absolute bottom-8 left-28 cursor-pointer group">
                       <div className="flex items-center space-x-1.5">
                         <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                        <span className="text-[9px] text-slate-300 font-mono">ORV Sagar Kanya CTD</span>
+                        <span className="text-[9px] text-white font-mono font-bold">ORV Sagar Kanya CTD</span>
                       </div>
                     </div>
                   </div>
@@ -228,9 +228,9 @@ export const Hero: React.FC = () => {
                       className="absolute top-20 right-24 cursor-pointer group"
                     >
                       <div className="relative flex items-center space-x-2">
-                        <span className="w-3 h-3 rounded-full bg-sky-400 animate-ping absolute"></span>
-                        <span className="w-3 h-3 rounded-full bg-sky-400 border border-white"></span>
-                        <div className="bg-slate-900/90 border border-sky-500/50 text-sky-300 text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-sky-400">
+                        <span className="w-3 h-3 rounded-full bg-white animate-ping absolute"></span>
+                        <span className="w-3 h-3 rounded-full bg-white border border-slate-900"></span>
+                        <div className="bg-slate-950/95 border border-slate-700 text-white font-bold text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-white transition-colors">
                           Himadri Station (78.92° N)
                         </div>
                       </div>
@@ -242,9 +242,9 @@ export const Hero: React.FC = () => {
                       className="absolute bottom-16 left-24 cursor-pointer group"
                     >
                       <div className="relative flex items-center space-x-2">
-                        <span className="w-3 h-3 rounded-full bg-cyan-400 animate-ping absolute"></span>
-                        <span className="w-3 h-3 rounded-full bg-cyan-400 border border-white"></span>
-                        <div className="bg-slate-900/90 border border-cyan-500/50 text-cyan-300 text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-cyan-400">
+                        <span className="w-3 h-3 rounded-full bg-white animate-ping absolute"></span>
+                        <span className="w-3 h-3 rounded-full bg-white border border-slate-900"></span>
+                        <div className="bg-slate-950/95 border border-slate-700 text-white font-bold text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-white transition-colors">
                           IndARC Mooring (Subsurface)
                         </div>
                       </div>
@@ -261,11 +261,11 @@ export const Hero: React.FC = () => {
                 </div>
                 <div className="text-right font-mono">
                   <span className="text-slate-300 block text-[10px]">LATEST TEMP</span>
-                  <span className="text-sky-400 font-bold">{selectedStation.latestObservation.temp}</span>
+                  <span className="text-white font-extrabold">{selectedStation.latestObservation.temp}</span>
                 </div>
                 <Link
                   href={`/map?station=${selectedStation.id}`}
-                  className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-sky-300 rounded text-xs border border-slate-700 transition-colors font-semibold"
+                  className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded text-xs border border-slate-700 transition-colors"
                 >
                   View on Map ↗
                 </Link>
