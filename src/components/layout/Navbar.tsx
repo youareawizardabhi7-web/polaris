@@ -47,16 +47,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => 
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-xs">
+    <header className="sticky top-0 z-50 bg-slate-950/70 backdrop-blur-md border-b border-slate-800/60 shadow-lg">
       {/* Top National Scientific Banner */}
-      <div className="bg-slate-900 text-slate-300 text-xs py-1.5 px-4 sm:px-8 border-b border-slate-800">
+      <div className="bg-slate-950/80 text-slate-300 text-xs py-1.5 px-4 sm:px-8 border-b border-slate-800/80">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3 text-slate-300">
             <span className="inline-flex items-center text-sky-400 font-semibold tracking-wider uppercase text-[10px]">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
               National Polar Infrastructure
             </span>
-            <span className="hidden md:inline text-slate-600">|</span>
+            <span className="hidden md:inline text-slate-700">|</span>
             <span className="hidden md:inline text-slate-300">Inspired by India's polar science data ecosystem</span>
           </div>
 
@@ -78,17 +78,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => 
           
           {/* Brand Logo & Subtitle */}
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-slate-900 via-slate-800 to-sky-900 flex items-center justify-center text-sky-400 shadow-sm border border-slate-700 group-hover:border-sky-500 transition-all">
+            <div className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center text-sky-400 shadow-sm group-hover:border-sky-400 transition-all">
               <Compass className="w-6 h-6 text-sky-400 group-hover:rotate-45 transition-transform duration-300" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-xl tracking-tight text-slate-900 font-mono">POLARIS</span>
-                <span className="text-[10px] uppercase font-bold bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded border border-sky-200">
+                <span className="font-bold text-xl tracking-tight text-white font-mono">POLARIS</span>
+                <span className="text-[10px] uppercase font-bold bg-sky-950 text-sky-300 px-1.5 py-0.5 rounded border border-sky-800">
                   v2.0
                 </span>
               </div>
-              <span className="text-xs text-slate-500 font-medium tracking-tight">
+              <span className="text-xs text-slate-300 font-medium tracking-tight">
                 Polar Science Data Discovery Portal
               </span>
             </div>
@@ -102,13 +102,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => 
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`px-3.5 py-2 rounded-md text-sm font-medium transition-all flex items-center space-x-1.5 ${
+                  className={`px-3 py-2 rounded-md text-xs font-semibold transition-all flex items-center space-x-1.5 ${
                     active
-                      ? 'bg-sky-50 text-sky-800 font-semibold border border-sky-200'
-                      : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+                      ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40'
+                      : 'text-slate-200 hover:text-white hover:bg-slate-800/60'
                   }`}
                 >
-                  <link.icon className={`w-4 h-4 ${active ? 'text-sky-600' : 'text-slate-400'}`} />
+                  <link.icon className={`w-4 h-4 ${active ? 'text-sky-400' : 'text-slate-400'}`} />
                   <span>{link.name}</span>
                 </Link>
               );
@@ -126,21 +126,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => 
                   onOpenSearch();
                 }
               }}
-              className="p-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition-all flex items-center space-x-2 text-xs font-medium"
+              className="p-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/60 border border-slate-700/60 transition-all flex items-center space-x-2 text-xs font-medium"
               title="Search POLARIS Datasets & Knowledge Graph"
             >
-              <Search className="w-4 h-4 text-slate-500" />
-              <span className="hidden xl:inline text-slate-600 font-mono">Global Search...</span>
-              <kbd className="hidden xl:inline px-1.5 py-0.5 text-[10px] font-mono bg-slate-100 border border-slate-300 rounded text-slate-500">⌘K</kbd>
+              <Search className="w-4 h-4 text-sky-400" />
+              <span className="hidden xl:inline text-slate-300 font-mono">Global Search...</span>
+              <kbd className="hidden xl:inline px-1.5 py-0.5 text-[10px] font-mono bg-slate-800 border border-slate-700 rounded text-slate-400">⌘K</kbd>
             </Link>
-
 
             {/* Researcher Portal / Login */}
             <button
               onClick={onOpenLogin}
-              className="px-3.5 py-2 rounded-md text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 transition-all flex items-center space-x-2 shadow-xs border border-slate-800 active:scale-95"
+              className="px-3.5 py-2 rounded-md text-xs font-bold text-slate-950 bg-sky-400 hover:bg-sky-300 transition-all flex items-center space-x-2 shadow-sm active:scale-95"
             >
-              <UserCheck className="w-3.5 h-3.5 text-sky-400" />
+              <UserCheck className="w-3.5 h-3.5 text-slate-950" />
               <span>Researcher Portal</span>
             </button>
           </div>
@@ -149,13 +148,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => 
           <div className="flex lg:hidden items-center space-x-2">
             <button
               onClick={onOpenSearch}
-              className="p-2 text-slate-600 hover:text-slate-900 rounded-md"
+              className="p-2 text-slate-300 hover:text-white rounded-md"
             >
               <Search className="w-5 h-5" />
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-md text-slate-700 hover:bg-slate-100"
+              className="p-2 rounded-md text-slate-200 hover:bg-slate-800/60"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -166,7 +165,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => 
 
       {/* Mobile Drawer */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-200 bg-slate-50 px-4 py-4 space-y-3">
+        <div className="lg:hidden border-t border-slate-800/80 bg-slate-950/95 backdrop-blur-lg px-4 py-4 space-y-3">
           <div className="space-y-1">
             {navLinks.map((link) => (
               <Link
@@ -175,25 +174,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => 
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`flex items-center space-x-3 px-3 py-2.5 rounded-md text-sm font-medium ${
                   isActive(link.href)
-                    ? 'bg-sky-100 text-sky-900 font-semibold'
-                    : 'text-slate-700 hover:bg-slate-200'
+                    ? 'bg-sky-500/20 text-sky-300 font-bold border border-sky-500/40'
+                    : 'text-slate-200 hover:bg-slate-800/60'
                 }`}
               >
-                <link.icon className="w-4 h-4 text-sky-700" />
+                <link.icon className="w-4 h-4 text-sky-400" />
                 <span>{link.name}</span>
               </Link>
             ))}
           </div>
 
-          <div className="pt-3 border-t border-slate-200 flex flex-col space-y-2">
+          <div className="pt-3 border-t border-slate-800/80 flex flex-col space-y-2">
             <button
               onClick={() => {
                 setIsMobileMenuOpen(false);
                 if (onOpenLogin) onOpenLogin();
               }}
-              className="w-full py-2.5 text-xs font-semibold text-white bg-slate-900 rounded-md flex items-center justify-center space-x-2"
+              className="w-full py-2.5 text-xs font-bold text-slate-950 bg-sky-400 rounded-md flex items-center justify-center space-x-2"
             >
-              <UserCheck className="w-4 h-4 text-sky-400" />
+              <UserCheck className="w-4 h-4 text-slate-950" />
               <span>Researcher Portal Access</span>
             </button>
           </div>

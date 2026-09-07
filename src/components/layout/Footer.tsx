@@ -8,7 +8,7 @@ import { getCurrentYear } from '@/lib/utils/date';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 text-sm">
+    <footer className="bg-slate-950/70 backdrop-blur-md text-slate-300 border-t border-slate-800/60 text-sm relative z-10">
       {/* Upper Main Footer Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">

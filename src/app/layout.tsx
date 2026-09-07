@@ -25,7 +25,7 @@ export default function RootLayout({
         />
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className="min-h-screen flex flex-col bg-slate-50 text-slate-900 antialiased selection:bg-sky-200 selection:text-sky-900">
+      <body className="min-h-screen flex flex-col bg-slate-950 text-white antialiased selection:bg-sky-500/30 selection:text-sky-200">
         <Navbar
           onOpenSearch={() => setIsSearchOpen(true)}
           onOpenLogin={() => setIsLoginOpen(true)}
