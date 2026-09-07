@@ -44,11 +44,7 @@ export const Hero: React.FC = () => {
           {/* Left Column: Hero Copy & Intelligent Search in a sleek dark glass container */}
           <div className="lg:col-span-7 bg-slate-950/45 backdrop-blur-xl border border-slate-800/60 rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl">
             
-            {/* Government Scientific Badge */}
-            <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-white text-xs font-mono shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-              <span>Polar Science • 2026 Data Infrastructure</span>
-            </div>
+
 
             {/* Headline with DecryptedText Effect */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] cursor-pointer">
@@ -83,8 +79,8 @@ export const Hero: React.FC = () => {
             {/* Large Intelligent Search Bar */}
             <form onSubmit={handleSearchSubmit} className="pt-2">
               <div className="relative group">
-                <div className="absolute inset-0 bg-slate-700/50 rounded-xl blur-md opacity-25 group-hover:opacity-40 transition-opacity"></div>
-                <div className="relative flex items-center bg-slate-900/90 border border-slate-700/90 rounded-xl p-2 shadow-2xl focus-within:border-slate-500 focus-within:ring-2 focus-within:ring-slate-500/20 transition-all">
+                <div className="absolute inset-0 bg-slate-700/40 rounded-xl blur-md opacity-25 group-hover:opacity-40 transition-opacity"></div>
+                <div className="relative flex items-center bg-slate-900/40 backdrop-blur-md border border-slate-700/60 rounded-xl p-2 shadow-2xl focus-within:border-slate-500 focus-within:ring-2 focus-within:ring-slate-500/20 transition-all">
                   <Search className="w-6 h-6 text-white ml-3 flex-shrink-0" />
                   <input
                     type="text"
@@ -96,7 +92,7 @@ export const Hero: React.FC = () => {
                   <div className="flex items-center space-x-2 mr-1">
                     <Link
                       href="/explore?mode=ai"
-                      className="hidden sm:flex items-center space-x-1.5 px-3 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-medium border border-slate-600 transition-colors"
+                      className="hidden sm:flex items-center space-x-1.5 px-3 py-2 bg-slate-800/50 hover:bg-slate-700/70 text-white rounded-lg text-xs font-medium border border-slate-600/60 transition-colors"
                       title="Try Natural Language Query Mode"
                     >
                       <Sparkles className="w-3.5 h-3.5 text-white" />
@@ -124,7 +120,7 @@ export const Hero: React.FC = () => {
                   <button
                     key={idx}
                     onClick={() => handleSuggestionClick(s)}
-                    className="px-3 py-1.5 bg-slate-900/90 hover:bg-slate-800 text-slate-100 hover:text-white border border-slate-700 hover:border-sky-400 rounded-md text-xs transition-all flex items-center space-x-1 font-medium"
+                    className="px-3 py-1.5 bg-slate-900/40 hover:bg-slate-800/70 text-white border border-slate-700/60 hover:border-sky-400 rounded-md text-xs transition-all flex items-center space-x-1 font-medium backdrop-blur-sm"
                   >
                     <span>{s.label}</span>
                   </button>

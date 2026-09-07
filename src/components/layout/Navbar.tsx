@@ -107,7 +107,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Vertical LineSidebar Drawer */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-800/80 bg-slate-950/95 backdrop-blur-xl px-6 py-6 space-y-4">
+        <div className="lg:hidden border-t border-slate-800/60 bg-slate-950/45 backdrop-blur-2xl px-6 py-6 space-y-4">
           <div className="flex items-center space-x-2 text-xs font-mono uppercase font-bold text-sky-400 tracking-wider mb-2">
             <Compass className="w-4 h-4 text-sky-400" />
             <span>Navigation Menu</span>
