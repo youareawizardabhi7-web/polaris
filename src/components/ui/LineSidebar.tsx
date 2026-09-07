@@ -6,8 +6,11 @@ import './LineSidebar.css';
 
 export interface SidebarItemObject {
   name: string;
-  href: string;
+  href?: string;
   icon?: React.ComponentType<{ className?: string }>;
+  onClick?: () => void;
+  badge?: string;
+  isSpecial?: boolean;
 }
 
 export type SidebarItem = string | SidebarItemObject;
@@ -89,7 +92,7 @@ export const LineSidebar: React.FC<LineSidebarProps> = ({
     if (activePath) {
       const idx = items.findIndex((item) => {
         if (typeof item === 'object') {
-          return item.href === activePath || (item.href !== '/' && activePath.startsWith(item.href));
+          return item.href === activePath || (item.href && item.href !== '/' && activePath.startsWith(item.href));
         }
         return false;
       });
@@ -167,6 +170,9 @@ export const LineSidebar: React.FC<LineSidebarProps> = ({
   const handleClick = useCallback(
     (index: number, label: string, item: SidebarItem) => {
       setActiveIndex(index);
+      if (typeof item === 'object' && item.onClick) {
+        item.onClick();
+      }
       onItemClick?.(index, label, item);
     },
     [onItemClick]
@@ -214,6 +220,8 @@ export const LineSidebar: React.FC<LineSidebarProps> = ({
           const label = typeof item === 'string' ? item : item.name;
           const href = typeof item === 'object' ? item.href : undefined;
           const Icon = typeof item === 'object' ? item.icon : undefined;
+          const badge = typeof item === 'object' ? item.badge : undefined;
+          const isSpecial = typeof item === 'object' ? item.isSpecial : undefined;
 
           const content = (
             <>
@@ -224,8 +232,13 @@ export const LineSidebar: React.FC<LineSidebarProps> = ({
                     {String(index + 1).padStart(2, '0')}
                   </span>
                 )}
-                {Icon && <Icon className="w-4 h-4 mr-2 text-sky-400 inline-block" />}
-                <span className="line-sidebar__text">{label}</span>
+                {Icon && <Icon className={`w-4 h-4 mr-2 inline-block ${isSpecial ? 'text-sky-400 font-bold' : 'text-sky-400'}`} />}
+                <span className={`line-sidebar__text ${isSpecial ? 'font-bold text-sky-300' : ''}`}>{label}</span>
+                {badge && (
+                  <kbd className="ml-2 px-1.5 py-0.5 text-[9px] font-mono bg-slate-800 border border-slate-700 rounded text-slate-300">
+                    {badge}
+                  </kbd>
+                )}
               </span>
             </>
           );
@@ -240,7 +253,11 @@ export const LineSidebar: React.FC<LineSidebarProps> = ({
               aria-current={activeIndex === index ? 'true' : undefined}
               onClick={() => handleClick(index, label, item)}
             >
-              {href ? <Link href={href} className="block w-full">{content}</Link> : content}
+              {href && (typeof item !== 'object' || !item.onClick) ? (
+                <Link href={href} className="block w-full">{content}</Link>
+              ) : (
+                content
+              )}
             </li>
           );
         })}

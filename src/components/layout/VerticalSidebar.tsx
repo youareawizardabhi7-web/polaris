@@ -12,16 +12,17 @@ import {
   Layers, 
   BookOpen, 
   Info,
-  Compass
+  Compass,
+  UserCheck
 } from 'lucide-react';
 import { LineSidebar, SidebarItemObject } from '@/components/ui/LineSidebar';
 
 interface VerticalSidebarProps {
-  isOpen?: boolean;
-  onClose?: () => void;
+  onOpenSearch?: () => void;
+  onOpenLogin?: () => void;
 }
 
-export const navLinks: SidebarItemObject[] = [
+export const getSidebarNavLinks = (onOpenSearch?: () => void, onOpenLogin?: () => void): SidebarItemObject[] => [
   { name: 'Explore Data', href: '/explore', icon: Search },
   { name: 'AI Assistant', href: '/assistant', icon: Sparkles },
   { name: 'Knowledge', href: '/knowledge', icon: BookOpenText },
@@ -31,10 +32,13 @@ export const navLinks: SidebarItemObject[] = [
   { name: 'Expeditions', href: '/expeditions', icon: Layers },
   { name: 'Research', href: '/research', icon: BookOpen },
   { name: 'About', href: '/about', icon: Info },
+  { name: 'Global Search', icon: Search, onClick: onOpenSearch, badge: '⌘K', isSpecial: true },
+  { name: 'Researcher Portal', icon: UserCheck, onClick: onOpenLogin, isSpecial: true },
 ];
 
-export const VerticalSidebar: React.FC<VerticalSidebarProps> = () => {
+export const VerticalSidebar: React.FC<VerticalSidebarProps> = ({ onOpenSearch, onOpenLogin }) => {
   const pathname = usePathname();
+  const links = getSidebarNavLinks(onOpenSearch, onOpenLogin);
 
   return (
     <aside className="fixed left-4 top-24 z-40 hidden xl:block w-64 bg-slate-950/85 backdrop-blur-xl border border-slate-800/80 rounded-2xl p-5 shadow-2xl transition-all duration-300">
@@ -44,7 +48,7 @@ export const VerticalSidebar: React.FC<VerticalSidebarProps> = () => {
       </div>
 
       <LineSidebar
-        items={navLinks}
+        items={links}
         accentColor="#38bdf8"
         textColor="#cbd5e1"
         markerColor="#475569"
@@ -57,7 +61,7 @@ export const VerticalSidebar: React.FC<VerticalSidebarProps> = () => {
         markerGap={6}
         tickScale={0.5}
         scaleTick={true}
-        itemGap={14}
+        itemGap={12}
         fontSize={0.88}
         smoothing={100}
         activePath={pathname}

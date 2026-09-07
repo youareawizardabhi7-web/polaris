@@ -12,7 +12,7 @@ import {
   Sidebar
 } from 'lucide-react';
 import { LineSidebar } from '@/components/ui/LineSidebar';
-import { navLinks } from '@/components/layout/VerticalSidebar';
+import { getSidebarNavLinks } from '@/components/layout/VerticalSidebar';
 
 interface NavbarProps {
   onOpenSearch?: () => void;
@@ -29,6 +29,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileNavLinks = getSidebarNavLinks(onOpenSearch, onOpenLogin);
 
   return (
     <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/60 shadow-lg">
@@ -139,7 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           <LineSidebar
-            items={navLinks}
+            items={mobileNavLinks}
             accentColor="#38bdf8"
             textColor="#f8fafc"
             markerColor="#64748b"

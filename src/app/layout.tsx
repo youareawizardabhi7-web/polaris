@@ -37,7 +37,12 @@ export default function RootLayout({
 
         <div className="flex-1 flex w-full relative">
           {/* Vertical Taskbar Sidebar using React Bits LineSidebar */}
-          {isSidebarOpen && <VerticalSidebar />}
+          {isSidebarOpen && (
+            <VerticalSidebar
+              onOpenSearch={() => setIsSearchOpen(true)}
+              onOpenLogin={() => setIsLoginOpen(true)}
+            />
+          )}
 
           {/* Main Content Area */}
           <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'xl:pl-72' : ''}`}>
@@ -52,4 +57,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-};
+}
