@@ -42,7 +42,7 @@ export const Hero: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           {/* Left Column: Hero Copy & Intelligent Search in a sleek dark glass container */}
-          <div className="lg:col-span-7 bg-slate-950/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl">
+          <div className="lg:col-span-7 bg-slate-950/45 backdrop-blur-xl border border-slate-800/60 rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xl">
             
             {/* Government Scientific Badge */}
             <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-white text-xs font-mono shadow-xs">
@@ -136,7 +136,7 @@ export const Hero: React.FC = () => {
 
           {/* Right Column: Elegant Interactive Polar Map Concept */}
           <div className="lg:col-span-5">
-            <div className="relative rounded-2xl bg-slate-950/90 backdrop-blur-md border border-slate-800 p-6 shadow-2xl overflow-hidden">
+            <div className="relative rounded-2xl bg-slate-950/45 backdrop-blur-xl border border-slate-800/60 p-6 shadow-2xl overflow-hidden">
               
               {/* Tab Switcher for Antarctic / Arctic View */}
               <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">

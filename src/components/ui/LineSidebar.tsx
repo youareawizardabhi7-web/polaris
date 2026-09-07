@@ -232,10 +232,10 @@ export const LineSidebar: React.FC<LineSidebarProps> = ({
                     {String(index + 1).padStart(2, '0')}
                   </span>
                 )}
-                {Icon && <Icon className={`w-4 h-4 mr-2 inline-block ${isSpecial ? 'text-sky-400 font-bold' : 'text-sky-400'}`} />}
-                <span className={`line-sidebar__text ${isSpecial ? 'font-bold text-sky-300' : ''}`}>{label}</span>
+                {Icon && <Icon className="w-4 h-4 mr-2 inline-block text-white" />}
+                <span className="line-sidebar__text text-white font-medium">{label}</span>
                 {badge && (
-                  <kbd className="ml-2 px-1.5 py-0.5 text-[9px] font-mono bg-slate-800 border border-slate-700 rounded text-slate-300">
+                  <kbd className="ml-2 px-1.5 py-0.5 text-[9px] font-mono bg-slate-900 border border-slate-700 rounded text-white font-bold">
                     {badge}
                   </kbd>
                 )}

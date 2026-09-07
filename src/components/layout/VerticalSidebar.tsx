@@ -49,9 +49,9 @@ export const VerticalSidebar: React.FC<VerticalSidebarProps> = ({ onOpenSearch, 
 
       <LineSidebar
         items={links}
-        accentColor="#38bdf8"
-        textColor="#cbd5e1"
-        markerColor="#475569"
+        accentColor="#ffffff"
+        textColor="#ffffff"
+        markerColor="#94a3b8"
         showIndex={true}
         showMarker={true}
         proximityRadius={90}

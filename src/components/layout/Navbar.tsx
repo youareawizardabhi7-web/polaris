@@ -93,32 +93,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Right Action Tools */}
           <div className="flex items-center space-x-3">
-            {/* Quick Search Dialog Button */}
-            <Link
-              href="/search"
-              onClick={(e) => {
-                if (onOpenSearch) {
-                  e.preventDefault();
-                  onOpenSearch();
-                }
-              }}
-              className="p-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/60 border border-slate-700/60 transition-all flex items-center space-x-2 text-xs font-medium"
-              title="Search POLARIS Datasets & Knowledge Graph"
-            >
-              <Search className="w-4 h-4 text-sky-400" />
-              <span className="hidden sm:inline text-slate-300 font-mono">Global Search...</span>
-              <kbd className="hidden sm:inline px-1.5 py-0.5 text-[10px] font-mono bg-slate-800 border border-slate-700 rounded text-slate-400">⌘K</kbd>
-            </Link>
-
-            {/* Researcher Portal / Login */}
-            <button
-              onClick={onOpenLogin}
-              className="px-3.5 py-2 rounded-md text-xs font-bold text-slate-950 bg-sky-400 hover:bg-sky-300 transition-all flex items-center space-x-2 shadow-sm active:scale-95"
-            >
-              <UserCheck className="w-3.5 h-3.5 text-slate-950" />
-              <span className="hidden sm:inline">Researcher Portal</span>
-            </button>
-
             {/* Mobile menu hamburger button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -141,9 +115,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <LineSidebar
             items={mobileNavLinks}
-            accentColor="#38bdf8"
-            textColor="#f8fafc"
-            markerColor="#64748b"
+            accentColor="#ffffff"
+            textColor="#ffffff"
+            markerColor="#94a3b8"
             showIndex={true}
             showMarker={true}
             proximityRadius={80}
