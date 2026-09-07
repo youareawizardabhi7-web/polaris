@@ -11,6 +11,7 @@ import { fetchDatasets } from '@/lib/api/portal';
 import { DatasetItem } from '@/types/portal';
 import { INDIAN_POLAR_EXPEDITIONS } from '@/lib/data/expeditions';
 import { DatasetCard } from '@/components/datasets/DatasetCard';
+import { DepthCarousel } from '@/components/ui/DepthCarousel';
 import { Database, ArrowRight, Sparkles, Navigation, ShieldCheck } from 'lucide-react';
 
 export default function HomePage() {
@@ -27,10 +28,7 @@ export default function HomePage() {
   const featuredDatasets = datasets.slice(0, 4);
 
   return (
-    <div className="relative min-h-screen bg-slate-950/40">
-      {/* Background Scroll-Tied Video Layer */}
-      <VideoScrubBackground />
-
+    <div className="relative min-h-screen bg-transparent">
       {/* Existing POLARIS Homepage Content */}
       <div className="relative z-10 space-y-0">
         {/* Hero Section */}
@@ -47,7 +45,7 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             {/* Header Glass Card */}
-            <div className="bg-slate-950/85 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 sm:p-8 mb-8 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 rounded-2xl p-6 sm:p-8 mb-8 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center space-x-2 text-xs font-mono uppercase font-bold text-slate-300 tracking-wider mb-1">
                   <Database className="w-4 h-4 text-slate-200" />
@@ -66,10 +64,32 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {featuredDatasets.map((dataset) => (
-                <DatasetCard key={dataset.id} dataset={dataset} />
-              ))}
+            {/* 3D Depth Stack Carousel for Featured Datasets */}
+            <div className="relative w-full h-[520px] flex items-center justify-center overflow-hidden py-4">
+              <DepthCarousel
+                items={featuredDatasets}
+                renderCard={(dataset: DatasetItem) => (
+                  <div className="w-full h-full p-1 text-left">
+                    <DatasetCard dataset={dataset} />
+                  </div>
+                )}
+                cardWidth={560}
+                cardHeight={380}
+                radius={20}
+                depth={220}
+                spread={90}
+                tilt={22}
+                tiltDirection="right"
+                perspective={1400}
+                visibleCards={4}
+                falloff={0.2}
+                blur={6}
+                autoplay
+                autoplayDelay={3600}
+                loop
+                showControls
+                showIndicators
+              />
             </div>
 
           </div>
@@ -80,7 +100,7 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
             
             {/* Header Glass Card */}
-            <div className="bg-slate-950/85 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 sm:p-8 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 rounded-2xl p-6 sm:p-8 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center space-x-2 text-xs font-mono uppercase font-bold text-slate-300 mb-1">
                   <Navigation className="w-4 h-4 text-slate-200" />
@@ -104,7 +124,7 @@ export default function HomePage() {
               {INDIAN_POLAR_EXPEDITIONS.slice(0, 3).map((exp) => (
                 <div
                   key={exp.id}
-                  className="bg-slate-950/85 backdrop-blur-md border border-slate-800/80 rounded-xl p-6 space-y-4 hover:border-slate-600 transition-all group shadow-xl"
+                  className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 rounded-xl p-6 space-y-4 hover:border-slate-600 transition-all group shadow-xl"
                 >
                   <div className="flex items-center justify-between">
                     <span className="px-2.5 py-0.5 rounded text-[11px] font-mono font-bold bg-slate-900 text-white border border-slate-700">
@@ -135,13 +155,8 @@ export default function HomePage() {
         {/* FAIR Principles & Government Mission Callout */}
         <section className="py-16 bg-transparent border-b border-slate-800/40">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-slate-950/85 backdrop-blur-md border border-slate-800/80 rounded-2xl p-8 sm:p-12 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 rounded-2xl p-8 sm:p-12 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-8">
               <div className="space-y-4 max-w-2xl">
-                <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-950/70 text-emerald-300 border border-emerald-800/70 text-xs font-mono font-bold">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span>Open Science & FAIR Compliance</span>
-                </div>
-
                 <h3 className="text-2xl font-bold text-white tracking-tight">
                   National Polar Data Management Framework
                 </h3>
@@ -154,9 +169,9 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                 <Link
                   href="/explore?mode=ai"
-                  className="px-5 py-3 bg-sky-400 hover:bg-sky-300 text-slate-950 font-bold rounded-xl text-xs text-center transition-all flex items-center justify-center space-x-2 shadow-sm"
+                  className="px-5 py-3 bg-slate-700/60 hover:bg-slate-700/80 text-white font-bold border border-slate-500/50 backdrop-blur-md rounded-xl text-xs text-center transition-all flex items-center justify-center space-x-2 shadow-sm"
                 >
-                  <Sparkles className="w-4 h-4 text-slate-950" />
+                  <Sparkles className="w-4 h-4 text-white" />
                   <span>Try Natural Query AI</span>
                 </Link>
                 <Link

@@ -76,21 +76,21 @@ export default function KnowledgePage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
+    <div className="min-h-screen bg-transparent py-8 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Knowledge Repository Header */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 shadow-xs space-y-6">
-          <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-sky-100 text-sky-900 border border-sky-200 text-xs font-mono font-bold">
-            <BookOpenText className="w-4 h-4 text-sky-600" />
+        <div className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 rounded-2xl p-6 sm:p-10 shadow-2xl space-y-6">
+          <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-slate-900 text-sky-300 border border-slate-700 text-xs font-mono font-bold">
+            <BookOpenText className="w-4 h-4 text-sky-300" />
             <span>National Polar Infrastructure Knowledge Base</span>
           </div>
 
           <div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
               Polar Science Knowledge Repository
             </h1>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-3xl mt-2">
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-3xl mt-2">
               Explore research, publications, reports and educational resources from India's polar science ecosystem.
             </p>
           </div>

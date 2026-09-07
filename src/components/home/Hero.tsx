@@ -132,27 +132,27 @@ export const Hero: React.FC = () => {
 
           {/* Right Column: Elegant Interactive Polar Map Concept */}
           <div className="lg:col-span-5">
-            <div className="relative rounded-2xl bg-slate-950/45 backdrop-blur-xl border border-slate-800/60 p-6 shadow-2xl overflow-hidden">
+            <div className="relative rounded-2xl bg-slate-950/10 backdrop-blur-md border border-slate-800/30 p-6 shadow-2xl overflow-hidden">
               
               {/* Tab Switcher for Antarctic / Arctic View */}
               <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => setActivePolarTab('antarctica')}
-                    className={`px-3 py-1.5 rounded-md text-xs font-bold font-mono transition-all ${
+                    className={`px-3 py-1.5 rounded-md text-xs font-bold font-mono transition-all border ${
                       activePolarTab === 'antarctica'
-                        ? 'bg-sky-400 text-slate-950 shadow-sm'
-                        : 'bg-slate-900 text-slate-300 hover:text-white'
+                        ? 'bg-slate-700/60 backdrop-blur-md text-white border-slate-500/50 shadow-sm'
+                        : 'bg-slate-900/40 backdrop-blur-sm text-slate-300 hover:text-white hover:bg-slate-800/50 border-slate-800/40'
                     }`}
                   >
                     South Pole (Antarctica)
                   </button>
                   <button
                     onClick={() => setActivePolarTab('arctic')}
-                    className={`px-3 py-1.5 rounded-md text-xs font-bold font-mono transition-all ${
+                    className={`px-3 py-1.5 rounded-md text-xs font-bold font-mono transition-all border ${
                       activePolarTab === 'arctic'
-                        ? 'bg-sky-400 text-slate-950 shadow-sm'
-                        : 'bg-slate-900 text-slate-300 hover:text-white'
+                        ? 'bg-slate-700/60 backdrop-blur-md text-white border-slate-500/50 shadow-sm'
+                        : 'bg-slate-900/40 backdrop-blur-sm text-slate-300 hover:text-white hover:bg-slate-800/50 border-slate-800/40'
                     }`}
                   >
                     North Pole (Arctic)
@@ -165,7 +165,7 @@ export const Hero: React.FC = () => {
               </div>
 
               {/* Scientific Vector Canvas Simulation */}
-              <div className="relative h-64 sm:h-72 w-full rounded-xl bg-slate-900/95 border border-slate-800 flex items-center justify-center overflow-hidden">
+              <div className="relative h-64 sm:h-72 w-full rounded-xl bg-transparent border border-slate-700/30 flex items-center justify-center overflow-hidden">
                 {/* Concentric Polar Grid Rings */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div className="w-60 h-60 rounded-full border border-sky-500/10 animate-spin" style={{ animationDuration: '60s' }}></div>
@@ -188,7 +188,7 @@ export const Hero: React.FC = () => {
                       <div className="relative flex items-center space-x-2">
                         <span className="w-3 h-3 rounded-full bg-white animate-ping absolute"></span>
                         <span className="w-3 h-3 rounded-full bg-white border border-slate-900"></span>
-                        <div className="bg-slate-950/95 border border-slate-700 text-white font-bold text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-white transition-colors">
+                        <div className="bg-slate-950/15 backdrop-blur-sm border border-slate-700/40 text-white font-bold text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-white transition-colors">
                           Maitri Station (-70.77°, 11.73°)
                         </div>
                       </div>
@@ -202,7 +202,7 @@ export const Hero: React.FC = () => {
                       <div className="relative flex items-center space-x-2">
                         <span className="w-3 h-3 rounded-full bg-white animate-ping absolute"></span>
                         <span className="w-3 h-3 rounded-full bg-white border border-slate-900"></span>
-                        <div className="bg-slate-950/95 border border-slate-700 text-white font-bold text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-white transition-colors">
+                        <div className="bg-slate-950/15 backdrop-blur-sm border border-slate-700/40 text-white font-bold text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-white transition-colors">
                           Bharati Station (-69.41°, 76.19°)
                         </div>
                       </div>
@@ -226,7 +226,7 @@ export const Hero: React.FC = () => {
                       <div className="relative flex items-center space-x-2">
                         <span className="w-3 h-3 rounded-full bg-white animate-ping absolute"></span>
                         <span className="w-3 h-3 rounded-full bg-white border border-slate-900"></span>
-                        <div className="bg-slate-950/95 border border-slate-700 text-white font-bold text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-white transition-colors">
+                        <div className="bg-slate-950/15 backdrop-blur-sm border border-slate-700/40 text-white font-bold text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-white transition-colors">
                           Himadri Station (78.92° N)
                         </div>
                       </div>
@@ -240,7 +240,7 @@ export const Hero: React.FC = () => {
                       <div className="relative flex items-center space-x-2">
                         <span className="w-3 h-3 rounded-full bg-white animate-ping absolute"></span>
                         <span className="w-3 h-3 rounded-full bg-white border border-slate-900"></span>
-                        <div className="bg-slate-950/95 border border-slate-700 text-white font-bold text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-white transition-colors">
+                        <div className="bg-slate-950/15 backdrop-blur-sm border border-slate-700/40 text-white font-bold text-[10px] font-mono px-2 py-0.5 rounded shadow-lg group-hover:border-white transition-colors">
                           IndARC Mooring (Subsurface)
                         </div>
                       </div>

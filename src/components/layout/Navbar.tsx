@@ -33,29 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/60 shadow-lg">
-      {/* Top National Scientific Banner */}
-      <div className="bg-slate-950/90 text-slate-300 text-xs py-1.5 px-4 sm:px-8 border-b border-slate-800/80">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-3 text-slate-300">
-            <span className="inline-flex items-center text-sky-400 font-semibold tracking-wider uppercase text-[10px]">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span>
-              National Polar Infrastructure
-            </span>
-            <span className="hidden md:inline text-slate-700">|</span>
-            <span className="hidden md:inline text-slate-300">Inspired by India's polar science data ecosystem</span>
-          </div>
 
-          <div className="flex items-center space-x-4 text-[11px]">
-            <a href="https://data.ncpor.res.in/" target="_blank" rel="noreferrer" className="hover:text-white transition-colors hidden sm:inline">
-              NCPOR Main Data Portal ↗
-            </a>
-            <span className="text-slate-700">|</span>
-            <Link href="/about#fair-principles" className="hover:text-sky-300 transition-colors">
-              FAIR Data Compliant
-            </Link>
-          </div>
-        </div>
-      </div>
 
       {/* Main Header Bar (Logo + Search + Researcher Portal) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

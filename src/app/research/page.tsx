@@ -32,23 +32,23 @@ export default function ResearchDashboardPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
+    <div className="min-h-screen bg-transparent py-8 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Researcher Header Banner */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 rounded-2xl p-6 sm:p-8 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center space-x-4">
-            <div className="w-14 h-14 rounded-2xl bg-slate-900 text-sky-400 border border-slate-800 flex items-center justify-center font-bold text-xl shadow-md">
-              <UserCheck className="w-7 h-7 text-sky-400" />
+            <div className="w-14 h-14 rounded-2xl bg-slate-900 text-sky-300 border border-slate-700 flex items-center justify-center font-bold text-xl shadow-md">
+              <UserCheck className="w-7 h-7 text-sky-300" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <h1 className="text-2xl font-extrabold text-slate-900">Researcher Workspace</h1>
-                <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                <h1 className="text-2xl font-extrabold text-white">Researcher Workspace</h1>
+                <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-900 text-emerald-400 border border-slate-700">
                   NCPOR Verified Principal Investigator
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-slate-300 mt-1">
                 Manage your saved polar datasets, custom parameter charts, download history, and APA/BibTeX citations.
               </p>
             </div>

@@ -34,7 +34,7 @@ export const RegionCards: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header Glass Card */}
-        <div className="bg-slate-950/85 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 sm:p-8 mb-8 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 rounded-2xl p-6 sm:p-8 mb-8 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center space-x-2 text-xs font-mono uppercase font-bold text-white tracking-wider mb-1">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -59,7 +59,7 @@ export const RegionCards: React.FC = () => {
               size="auto"
               theme={themes[region.id as keyof typeof themes] || 'primary'}
               variant="premium"
-              className="bg-slate-950/85 backdrop-blur-md border border-slate-800/80 shadow-2xl"
+              className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 shadow-2xl"
             >
               <div className="flex flex-col justify-between h-full space-y-4">
                 <div>
@@ -67,18 +67,11 @@ export const RegionCards: React.FC = () => {
                     <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center shadow-inner">
                       {getIcon(region.id)}
                     </div>
-                    <span className="px-2.5 py-1 bg-slate-900 border border-slate-700/80 text-white font-mono text-xs font-bold rounded-md">
-                      {region.datasetCount}
-                    </span>
                   </div>
 
-                  <h3 className="text-xl font-extrabold text-white tracking-tight drop-shadow-md">
+                  <h3 className="text-xl font-extrabold text-white tracking-tight drop-shadow-md my-2">
                     {region.title}
                   </h3>
-                  
-                  <span className="inline-block text-xs font-bold text-white bg-slate-900 px-2.5 py-1 rounded border border-slate-700 my-2">
-                    {region.stationsCount}
-                  </span>
 
                   <p className="text-xs text-white leading-relaxed mt-2 font-normal drop-shadow-sm">
                     {region.description}

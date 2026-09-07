@@ -85,21 +85,21 @@ export default function MediaPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
+    <div className="min-h-screen bg-transparent py-8 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Media Header */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-10 shadow-xs space-y-6">
-          <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-blue-100 text-blue-900 border border-blue-200 text-xs font-mono font-bold">
-            <Newspaper className="w-4 h-4 text-blue-700" />
+        <div className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 rounded-2xl p-6 sm:p-10 shadow-2xl space-y-6">
+          <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-slate-900 text-white border border-slate-700 text-xs font-mono font-bold">
+            <Newspaper className="w-4 h-4 text-white" />
             <span>National Polar Media & News Dissemination</span>
           </div>
 
           <div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
               Polar Science Media
             </h1>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-3xl mt-2">
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-3xl mt-2">
               Stay informed about polar research, expeditions, discoveries, events and scientific developments.
             </p>
           </div>

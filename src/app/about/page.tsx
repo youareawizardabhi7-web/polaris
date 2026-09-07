@@ -6,21 +6,21 @@ import { Compass, ShieldCheck, Database, Globe, FileText, ExternalLink, Mail, Ph
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-slate-50 py-10">
+    <div className="min-h-screen bg-transparent py-10 text-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         {/* About Hero Header */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-8 sm:p-12 shadow-xs space-y-4">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sky-100 text-sky-900 border border-sky-200 text-xs font-mono font-bold">
-            <Compass className="w-4 h-4 text-sky-600" />
+        <div className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 rounded-2xl p-8 sm:p-12 shadow-2xl space-y-4">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-900 text-sky-300 border border-slate-700 text-xs font-mono font-bold">
+            <Compass className="w-4 h-4 text-sky-300" />
             <span>National Polar Data Infrastructure</span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             About POLARIS Portal
           </h1>
 
-          <p className="text-base text-slate-600 leading-relaxed max-w-3xl">
+          <p className="text-base text-slate-300 leading-relaxed max-w-3xl">
             POLARIS (Polar Science Data Discovery & Visualization Portal) is an open-access scientific repository inspired by India's polar science data ecosystem.
           </p>
         </div>

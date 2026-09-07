@@ -57,7 +57,7 @@ export const Stats: React.FC = () => {
                 size="auto"
                 theme={stat.theme}
                 variant="premium"
-                className="bg-slate-950/85 backdrop-blur-md border border-slate-800/80 shadow-2xl"
+                className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 shadow-2xl"
               >
                 <div className="flex flex-col justify-between h-full space-y-4">
                   <div className="flex items-center justify-between">

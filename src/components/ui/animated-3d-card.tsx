@@ -192,7 +192,7 @@ export const Card3D = React.forwardRef<HTMLDivElement, Card3DProps>(
       <motion.div
         ref={ref}
         className={cn(
-          "group relative w-full overflow-hidden rounded-2xl transform-gpu transition-all duration-500 ease-out border border-slate-700/80 backdrop-blur-md bg-slate-950/85",
+          "group relative w-full overflow-hidden rounded-2xl transform-gpu transition-all duration-500 ease-out border border-slate-800/60 backdrop-blur-xl bg-slate-950/40",
           SIZES[size],
           VARIANTS[variant],
           onClick && !disabled && !loading && "cursor-pointer",

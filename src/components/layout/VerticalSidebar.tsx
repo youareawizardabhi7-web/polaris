@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
   Search, 
@@ -41,8 +42,11 @@ export const VerticalSidebar: React.FC<VerticalSidebarProps> = ({ onOpenSearch, 
   const links = getSidebarNavLinks(onOpenSearch, onOpenLogin);
 
   return (
-    <aside className="fixed left-4 top-24 z-40 hidden xl:block w-64 bg-slate-950/40 backdrop-blur-2xl border border-slate-800/50 rounded-2xl p-5 shadow-2xl transition-all duration-300">
-
+    <aside className="fixed left-6 top-6 z-40 hidden xl:block w-64 bg-slate-950/45 backdrop-blur-2xl border border-slate-800/50 rounded-2xl p-5 shadow-2xl transition-all duration-300">
+      {/* Large POLARIS Brand Title */}
+      <Link href="/" className="block mb-4 pb-3 border-b border-slate-800/60 group">
+        <span className="font-extrabold text-2xl sm:text-3xl tracking-wider text-white font-mono block">POLARIS</span>
+      </Link>
 
       <LineSidebar
         items={links}

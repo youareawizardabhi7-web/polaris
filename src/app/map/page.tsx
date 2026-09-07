@@ -34,20 +34,20 @@ function MapPageContent() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 text-slate-900">
+    <div className="min-h-screen bg-transparent py-8 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         
-        {/* Header (Light Mode POLARIS Design) */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+        {/* Header */}
+        <div className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 rounded-2xl p-6 sm:p-8 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="flex items-center space-x-2 text-xs font-mono uppercase font-bold text-sky-700 mb-1">
-              <Navigation className="w-4 h-4 text-cyan-600" />
+            <div className="flex items-center space-x-2 text-xs font-mono uppercase font-bold text-white mb-1">
+              <Navigation className="w-4 h-4 text-white" />
               <span>POLAR SPATIAL INFRASTRUCTURE</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
               3D Scientific Polar Globe & Observatories
             </h1>
-            <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-3xl leading-relaxed">
               Interactive 3D Earth globe visualization powered by MapLibre GL JS and live backend telemetry from NCPOR, MoES, and international polar stations.
             </p>
           </div>

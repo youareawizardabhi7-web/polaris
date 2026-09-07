@@ -14,20 +14,20 @@ export default function ExpeditionsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
+    <div className="min-h-screen bg-transparent py-8 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Header */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 rounded-2xl p-6 sm:p-8 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="flex items-center space-x-2 text-xs font-mono uppercase font-bold text-sky-700 mb-1">
-              <Ship className="w-4 h-4 text-sky-600" />
+            <div className="flex items-center space-x-2 text-xs font-mono uppercase font-bold text-white mb-1">
+              <Ship className="w-4 h-4 text-white" />
               <span>INDIAN POLAR SCIENTIFIC MISSIONS</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
               Indian Polar Expeditions & Missions
             </h1>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-300 mt-1">
               Historical timeline and active field deployments across Antarctica, Arctic, Southern Ocean, and High Mountain Asia.
             </p>
           </div>

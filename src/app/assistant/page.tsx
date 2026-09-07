@@ -24,7 +24,7 @@ function AssistantContent() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
+    <div className="min-h-screen bg-transparent py-8 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <AssistantChat 
           initialContext={initialContext} 
@@ -38,7 +38,7 @@ function AssistantContent() {
 export default function AssistantPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-slate-50 py-12 text-center text-xs font-mono text-slate-500">
+      <div className="min-h-screen bg-transparent py-12 text-center text-xs font-mono text-slate-300">
         Loading POLARIS AI Assistant...
       </div>
     }>

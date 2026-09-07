@@ -30,7 +30,7 @@ export const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
       size="auto"
       theme="primary"
       variant="premium"
-      className="bg-slate-950/85 backdrop-blur-md border border-slate-800/80 shadow-2xl"
+      className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 shadow-2xl"
     >
       <div className="flex flex-col justify-between h-full">
         <div>

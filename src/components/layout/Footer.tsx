@@ -28,15 +28,6 @@ export const Footer: React.FC = () => {
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
               Inspired by India's polar science data ecosystem. Open-access prototype portal for polar research, station telemetry, and scientific dataset visualization.
             </p>
-
-            <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] font-mono text-slate-400">
-              <span className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-sky-300">
-                SIH Prototype Portal
-              </span>
-              <span className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-emerald-300">
-                Sample Scientific Records
-              </span>
-            </div>
           </div>
 
           {/* Column 1: Scientific Data */}
