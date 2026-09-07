@@ -8,48 +8,32 @@ import {
   Search, 
   UserCheck, 
   Menu, 
-  X, 
-  Layers, 
-  Database, 
-  Navigation, 
-  BookOpen,
-  BookOpenText, 
-  Newspaper,
-  Info,
-  Sparkles
+  X,
+  Sidebar
 } from 'lucide-react';
+import { LineSidebar } from '@/components/ui/LineSidebar';
+import { navLinks } from '@/components/layout/VerticalSidebar';
 
 interface NavbarProps {
   onOpenSearch?: () => void;
   onOpenLogin?: () => void;
+  onToggleSidebar?: () => void;
+  isSidebarOpen?: boolean;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => {
+export const Navbar: React.FC<NavbarProps> = ({ 
+  onOpenSearch, 
+  onOpenLogin,
+  onToggleSidebar,
+  isSidebarOpen 
+}) => {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const navLinks = [
-    { name: 'Explore Data', href: '/explore', icon: Search },
-    { name: 'AI Assistant', href: '/assistant', icon: Sparkles },
-    { name: 'Knowledge', href: '/knowledge', icon: BookOpenText },
-    { name: 'Media', href: '/media', icon: Newspaper },
-    { name: 'Polar Map', href: '/map', icon: Navigation },
-    { name: 'Datasets', href: '/datasets', icon: Database },
-    { name: 'Expeditions', href: '/expeditions', icon: Layers },
-    { name: 'Research', href: '/research', icon: BookOpen },
-    { name: 'About', href: '/about', icon: Info },
-  ];
-
-  const isActive = (path: string) => {
-    if (path === '/explore' && pathname === '/explore') return true;
-    if (path === '/datasets' && (pathname === '/datasets' || pathname.startsWith('/datasets/'))) return true;
-    return pathname === path;
-  };
-
   return (
-    <header className="sticky top-0 z-50 bg-slate-950/70 backdrop-blur-md border-b border-slate-800/60 shadow-lg">
+    <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/60 shadow-lg">
       {/* Top National Scientific Banner */}
-      <div className="bg-slate-950/80 text-slate-300 text-xs py-1.5 px-4 sm:px-8 border-b border-slate-800/80">
+      <div className="bg-slate-950/90 text-slate-300 text-xs py-1.5 px-4 sm:px-8 border-b border-slate-800/80">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3 text-slate-300">
             <span className="inline-flex items-center text-sky-400 font-semibold tracking-wider uppercase text-[10px]">
@@ -72,51 +56,42 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => 
         </div>
       </div>
 
-      {/* Main Sticky Header */}
+      {/* Main Header Bar (Logo + Search + Researcher Portal) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
-          {/* Brand Logo & Subtitle */}
-          <Link href="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center text-sky-400 shadow-sm group-hover:border-sky-400 transition-all">
-              <Compass className="w-6 h-6 text-sky-400 group-hover:rotate-45 transition-transform duration-300" />
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center space-x-2">
-                <span className="font-bold text-xl tracking-tight text-white font-mono">POLARIS</span>
-                <span className="text-[10px] uppercase font-bold bg-sky-950 text-sky-300 px-1.5 py-0.5 rounded border border-sky-800">
-                  v2.0
+          <div className="flex items-center space-x-4">
+            {/* Sidebar Toggle Button for Desktop/Tablet */}
+            <button
+              onClick={onToggleSidebar}
+              className="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/80 border border-slate-800 transition-all flex items-center space-x-2 text-xs font-semibold"
+              title="Toggle Vertical Line Sidebar"
+            >
+              <Sidebar className="w-4 h-4 text-sky-400" />
+              <span className="hidden sm:inline font-mono">Menu</span>
+            </button>
+
+            {/* Brand Logo & Subtitle */}
+            <Link href="/" className="flex items-center space-x-3 group">
+              <div className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center text-sky-400 shadow-sm group-hover:border-sky-400 transition-all">
+                <Compass className="w-6 h-6 text-sky-400 group-hover:rotate-45 transition-transform duration-300" />
+              </div>
+              <div className="flex flex-col">
+                <div className="flex items-center space-x-2">
+                  <span className="font-bold text-xl tracking-tight text-white font-mono">POLARIS</span>
+                  <span className="text-[10px] uppercase font-bold bg-sky-950 text-sky-300 px-1.5 py-0.5 rounded border border-sky-800">
+                    v2.0
+                  </span>
+                </div>
+                <span className="text-xs text-slate-300 font-medium tracking-tight">
+                  Polar Science Data Discovery Portal
                 </span>
               </div>
-              <span className="text-xs text-slate-300 font-medium tracking-tight">
-                Polar Science Data Discovery Portal
-              </span>
-            </div>
-          </Link>
-
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-1">
-            {navLinks.map((link) => {
-              const active = isActive(link.href);
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`px-3 py-2 rounded-md text-xs font-semibold transition-all flex items-center space-x-1.5 ${
-                    active
-                      ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40'
-                      : 'text-slate-200 hover:text-white hover:bg-slate-800/60'
-                  }`}
-                >
-                  <link.icon className={`w-4 h-4 ${active ? 'text-sky-400' : 'text-slate-400'}`} />
-                  <span>{link.name}</span>
-                </Link>
-              );
-            })}
-          </nav>
+            </Link>
+          </div>
 
           {/* Right Action Tools */}
-          <div className="hidden sm:flex items-center space-x-3">
+          <div className="flex items-center space-x-3">
             {/* Quick Search Dialog Button */}
             <Link
               href="/search"
@@ -130,8 +105,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => 
               title="Search POLARIS Datasets & Knowledge Graph"
             >
               <Search className="w-4 h-4 text-sky-400" />
-              <span className="hidden xl:inline text-slate-300 font-mono">Global Search...</span>
-              <kbd className="hidden xl:inline px-1.5 py-0.5 text-[10px] font-mono bg-slate-800 border border-slate-700 rounded text-slate-400">⌘K</kbd>
+              <span className="hidden sm:inline text-slate-300 font-mono">Global Search...</span>
+              <kbd className="hidden sm:inline px-1.5 py-0.5 text-[10px] font-mono bg-slate-800 border border-slate-700 rounded text-slate-400">⌘K</kbd>
             </Link>
 
             {/* Researcher Portal / Login */}
@@ -140,21 +115,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => 
               className="px-3.5 py-2 rounded-md text-xs font-bold text-slate-950 bg-sky-400 hover:bg-sky-300 transition-all flex items-center space-x-2 shadow-sm active:scale-95"
             >
               <UserCheck className="w-3.5 h-3.5 text-slate-950" />
-              <span>Researcher Portal</span>
+              <span className="hidden sm:inline">Researcher Portal</span>
             </button>
-          </div>
 
-          {/* Mobile menu hamburger button */}
-          <div className="flex lg:hidden items-center space-x-2">
-            <button
-              onClick={onOpenSearch}
-              className="p-2 text-slate-300 hover:text-white rounded-md"
-            >
-              <Search className="w-5 h-5" />
-            </button>
+            {/* Mobile menu hamburger button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-md text-slate-200 hover:bg-slate-800/60"
+              className="p-2 lg:hidden rounded-md text-slate-200 hover:bg-slate-800/60"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -163,39 +130,34 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenLogin }) => 
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Vertical LineSidebar Drawer */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-800/80 bg-slate-950/95 backdrop-blur-lg px-4 py-4 space-y-3">
-          <div className="space-y-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`flex items-center space-x-3 px-3 py-2.5 rounded-md text-sm font-medium ${
-                  isActive(link.href)
-                    ? 'bg-sky-500/20 text-sky-300 font-bold border border-sky-500/40'
-                    : 'text-slate-200 hover:bg-slate-800/60'
-                }`}
-              >
-                <link.icon className="w-4 h-4 text-sky-400" />
-                <span>{link.name}</span>
-              </Link>
-            ))}
+        <div className="lg:hidden border-t border-slate-800/80 bg-slate-950/95 backdrop-blur-xl px-6 py-6 space-y-4">
+          <div className="flex items-center space-x-2 text-xs font-mono uppercase font-bold text-sky-400 tracking-wider mb-2">
+            <Compass className="w-4 h-4 text-sky-400" />
+            <span>Navigation Menu</span>
           </div>
 
-          <div className="pt-3 border-t border-slate-800/80 flex flex-col space-y-2">
-            <button
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                if (onOpenLogin) onOpenLogin();
-              }}
-              className="w-full py-2.5 text-xs font-bold text-slate-950 bg-sky-400 rounded-md flex items-center justify-center space-x-2"
-            >
-              <UserCheck className="w-4 h-4 text-slate-950" />
-              <span>Researcher Portal Access</span>
-            </button>
-          </div>
+          <LineSidebar
+            items={navLinks}
+            accentColor="#38bdf8"
+            textColor="#f8fafc"
+            markerColor="#64748b"
+            showIndex={true}
+            showMarker={true}
+            proximityRadius={80}
+            maxShift={18}
+            falloff="smooth"
+            markerLength={32}
+            markerGap={6}
+            tickScale={0.5}
+            scaleTick={true}
+            itemGap={12}
+            fontSize={0.9}
+            smoothing={100}
+            activePath={pathname}
+            onItemClick={() => setIsMobileMenuOpen(false)}
+          />
         </div>
       )}
     </header>

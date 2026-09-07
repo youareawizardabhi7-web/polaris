@@ -6,6 +6,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { SearchModal } from '@/components/modals/SearchModal';
 import { ResearcherModal } from '@/components/modals/ResearcherModal';
+import { VerticalSidebar } from '@/components/layout/VerticalSidebar';
 
 export default function RootLayout({
   children,
@@ -14,6 +15,7 @@ export default function RootLayout({
 }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
     <html lang="en">
@@ -29,8 +31,20 @@ export default function RootLayout({
         <Navbar
           onOpenSearch={() => setIsSearchOpen(true)}
           onOpenLogin={() => setIsLoginOpen(true)}
+          onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
+          isSidebarOpen={isSidebarOpen}
         />
-        <main className="flex-1">{children}</main>
+
+        <div className="flex-1 flex w-full relative">
+          {/* Vertical Taskbar Sidebar using React Bits LineSidebar */}
+          {isSidebarOpen && <VerticalSidebar />}
+
+          {/* Main Content Area */}
+          <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'xl:pl-72' : ''}`}>
+            {children}
+          </main>
+        </div>
+
         <Footer />
 
         <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
@@ -38,4 +52,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
