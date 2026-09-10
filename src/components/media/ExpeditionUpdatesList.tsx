@@ -10,7 +10,7 @@ export const ExpeditionUpdatesList: React.FC = () => {
   const sortedUpdates = sortByDateDesc(MOCK_EXPEDITION_UPDATES, 'date');
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+    <div className="bg-white/70 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-lg space-y-6">
       
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
@@ -40,7 +40,7 @@ export const ExpeditionUpdatesList: React.FC = () => {
         {sortedUpdates.map((item) => (
           <div
             key={item.id}
-            className="p-5 rounded-xl bg-slate-50 border border-slate-200 hover:border-sky-300 transition-all space-y-3 flex flex-col justify-between"
+            className="p-5 rounded-xl bg-white/75 backdrop-blur-md border border-slate-200/80 hover:border-sky-300 hover:bg-white/90 transition-all space-y-3 flex flex-col justify-between shadow-2xs"
           >
             <div className="space-y-2">
               <div className="flex items-center justify-between">

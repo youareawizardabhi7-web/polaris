@@ -8,7 +8,7 @@ export const PhotoGalleryModal: React.FC = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<PhotoStory | null>(null);
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+    <div className="bg-white/70 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-lg space-y-6">
       
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
@@ -35,7 +35,7 @@ export const PhotoGalleryModal: React.FC = () => {
           <div
             key={photo.id}
             onClick={() => setSelectedPhoto(photo)}
-            className="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden shadow-2xs hover:shadow-md hover:border-cyan-300 transition-all cursor-pointer group flex flex-col justify-between"
+            className="bg-white/75 backdrop-blur-md border border-slate-200/80 rounded-xl overflow-hidden shadow-2xs hover:shadow-md hover:border-cyan-300 transition-all cursor-pointer group flex flex-col justify-between"
           >
             <div className="relative h-52 w-full bg-slate-900 overflow-hidden">
               <img

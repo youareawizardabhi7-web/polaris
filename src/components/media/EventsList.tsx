@@ -7,7 +7,7 @@ import { Calendar, MapPin, Tag, ArrowRight, ExternalLink } from 'lucide-react';
 
 export const EventsList: React.FC = () => {
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+    <div className="bg-white/70 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-lg space-y-6">
       
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
@@ -33,7 +33,7 @@ export const EventsList: React.FC = () => {
         {MOCK_EVENTS.map((evt) => (
           <div
             key={evt.id}
-            className="p-6 rounded-xl bg-slate-50 border border-slate-200 hover:border-indigo-300 transition-all space-y-4 flex flex-col justify-between"
+            className="p-6 rounded-xl bg-white/75 backdrop-blur-md border border-slate-200/80 hover:border-indigo-300 hover:bg-white/90 transition-all space-y-4 flex flex-col justify-between shadow-2xs"
           >
             <div className="space-y-3">
               <div className="flex items-center justify-between">

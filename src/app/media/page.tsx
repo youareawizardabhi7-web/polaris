@@ -16,8 +16,8 @@ import { NewsCard } from '@/components/media/NewsCard';
 import { ExpeditionUpdatesList } from '@/components/media/ExpeditionUpdatesList';
 import { VideoGrid } from '@/components/media/VideoGrid';
 import { PhotoGalleryModal } from '@/components/media/PhotoGalleryModal';
-import { EventsList } from '@/components/media/EventsList';
 import { MediaCategoryBadge } from '@/components/media/MediaCategoryBadge';
+import CarouselStacked, { Slide } from '@/components/ui/carousel-07';
 import { 
   Newspaper, 
   Search, 
@@ -29,7 +29,9 @@ import {
   Layers, 
   Video, 
   Camera, 
-  Calendar 
+  Calendar,
+  Clock,
+  ArrowRight
 } from 'lucide-react';
 
 export default function MediaPage() {
@@ -128,7 +130,7 @@ export default function MediaPage() {
         </div>
 
         {/* Content Category Filter Bar */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-xs space-y-4">
+        <div className="bg-white/70 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-md space-y-4">
           <div className="flex flex-wrap items-center gap-2">
             {categories.map((cat) => {
               const isActive = activeCategory === cat;
@@ -192,7 +194,7 @@ export default function MediaPage() {
             </div>
 
             {filteredNews.length === 0 ? (
-              <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center space-y-4">
+              <div className="bg-white/70 backdrop-blur-md border border-slate-200/80 rounded-2xl p-12 text-center space-y-4">
                 <FilterX className="w-10 h-10 text-slate-300 mx-auto" />
                 <h3 className="text-base font-bold text-slate-900">No News Stories Found</h3>
                 <p className="text-xs text-slate-500 max-w-md mx-auto">
@@ -206,10 +208,65 @@ export default function MediaPage() {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredNews.map((article) => (
-                  <NewsCard key={article.id} article={article} />
-                ))}
+              <div className="py-2">
+                <CarouselStacked
+                  slides={filteredNews.map((article) => ({
+                    image: article.imageUrl,
+                    title: article.title,
+                    description: article.summary,
+                    badge: article.category,
+                    content: (
+                      <div className="relative h-full w-full bg-slate-950 text-white flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-700/60 shadow-2xl">
+                        <img
+                          src={article.imageUrl}
+                          alt={article.title}
+                          className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent" />
+
+                        {/* Top Badges */}
+                        <div className="relative z-10 p-4 flex items-center justify-between">
+                          <MediaCategoryBadge category={article.category} />
+                          <span className="bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-mono px-2.5 py-1 rounded-md flex items-center space-x-1 border border-slate-700/60">
+                            <Clock className="w-3 h-3 text-sky-400" />
+                            <span>{article.readingTime}</span>
+                          </span>
+                        </div>
+
+                        {/* Bottom Content */}
+                        <div className="relative z-10 p-5 space-y-2.5">
+                          <div className="flex items-center space-x-2 text-[10px] font-mono text-slate-300">
+                            <span className="flex items-center space-x-1">
+                              <Calendar className="w-3 h-3 text-slate-400" />
+                              <span>{article.publishedDate}</span>
+                            </span>
+                            <span>•</span>
+                            <span className="truncate max-w-[120px]">{article.source}</span>
+                          </div>
+
+                          <h3 className="text-sm sm:text-base font-bold text-white leading-snug line-clamp-2">
+                            {article.title}
+                          </h3>
+
+                          <p className="text-xs text-slate-300 leading-relaxed line-clamp-2">
+                            {article.summary}
+                          </p>
+
+                          <div className="pt-2 flex items-center justify-between text-[11px] font-mono">
+                            <span className="text-slate-400 text-[10px] truncate max-w-[110px]">{article.author}</span>
+                            <Link
+                              href={`/media/${article.id}`}
+                              className="inline-flex items-center space-x-1 text-xs font-bold text-sky-400 hover:text-sky-300 pointer-events-auto"
+                            >
+                              <span>Read Story</span>
+                              <ArrowRight className="w-3.5 h-3.5" />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  }))}
+                />
               </div>
             )}
           </section>
@@ -228,11 +285,6 @@ export default function MediaPage() {
         {/* Section 5: Photo Stories & Gallery */}
         {(activeCategory === 'All' || activeCategory === 'Photo Stories') && (
           <PhotoGalleryModal />
-        )}
-
-        {/* Section 6: Upcoming Events */}
-        {(activeCategory === 'All' || activeCategory === 'Events') && (
-          <EventsList />
         )}
 
       </div>

@@ -7,6 +7,7 @@ import { ChatMessage } from '@/components/ai/ChatMessage';
 import { SuggestedQuestions } from '@/components/ai/SuggestedQuestions';
 import { AssistantLoading } from '@/components/ai/AssistantLoading';
 import { AssistantError } from '@/components/ai/AssistantError';
+import { HeroWave } from '@/components/ui/ai-input-hero';
 import { 
   Compass, 
   Send, 
@@ -124,10 +125,10 @@ export const AssistantChat: React.FC<AssistantChatProps> = ({ initialContext, on
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-10rem)] min-h-[500px] max-w-5xl mx-auto bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
+    <div className="flex flex-col h-[calc(100vh-10rem)] min-h-[500px] max-w-5xl mx-auto bg-white/70 backdrop-blur-xl border border-slate-200/80 rounded-2xl shadow-xl overflow-hidden">
       
       {/* Assistant Header */}
-      <div className="bg-slate-900 text-white p-5 sm:p-6 border-b border-slate-800 flex items-center justify-between shrink-0">
+      <div className="bg-slate-900/90 text-white p-5 sm:p-6 border-b border-slate-800 flex items-center justify-between shrink-0 backdrop-blur-md">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-xl bg-sky-950 border border-sky-600/40 text-sky-400 flex items-center justify-center font-bold shadow-xs">
             <Compass className="w-6 h-6 text-sky-400" />
@@ -148,7 +149,7 @@ export const AssistantChat: React.FC<AssistantChatProps> = ({ initialContext, on
 
       {/* Active Context Banner */}
       {currentContext && (
-        <div className="bg-sky-50 border-b border-sky-200 p-3 sm:px-6 flex items-center justify-between text-xs font-mono shrink-0">
+        <div className="bg-sky-50/80 backdrop-blur-xs border-b border-sky-200 p-3 sm:px-6 flex items-center justify-between text-xs font-mono shrink-0">
           <div className="flex items-center space-x-2 text-sky-900">
             <span className="font-bold uppercase tracking-wider text-[10px] text-sky-700">Active Context:</span>
             <span className="px-2 py-0.5 rounded bg-sky-200 text-sky-900 font-bold uppercase text-[10px]">
@@ -160,7 +161,7 @@ export const AssistantChat: React.FC<AssistantChatProps> = ({ initialContext, on
           </div>
           <button
             onClick={handleRemoveContext}
-            className="px-2.5 py-1 bg-white hover:bg-slate-100 border border-sky-300 text-slate-700 rounded-md font-bold text-[11px] flex items-center space-x-1 transition-colors"
+            className="px-2.5 py-1 bg-white/90 hover:bg-slate-100 border border-sky-300 text-slate-700 rounded-md font-bold text-[11px] flex items-center space-x-1 transition-colors"
           >
             <X className="w-3 h-3 text-slate-500" />
             <span>Remove context</span>
@@ -169,19 +170,21 @@ export const AssistantChat: React.FC<AssistantChatProps> = ({ initialContext, on
       )}
 
       {/* Messages Scroll Area */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar bg-slate-50/50">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar bg-white/30 backdrop-blur-xs">
         
-        {/* Initial Empty State */}
+        {/* Initial Empty State with AI Input Hero */}
         {messages.length === 0 && (
-          <div className="space-y-6 max-w-2xl mx-auto py-8">
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 text-center space-y-3 shadow-xs">
-              <div className="w-12 h-12 rounded-2xl bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center mx-auto">
-                <MessageSquare className="w-6 h-6" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900">Ask POLARIS AI</h3>
-              <p className="text-xs text-slate-600 max-w-md mx-auto leading-relaxed">
-                Ask POLARIS about datasets, expeditions, stations and polar research across Antarctica, the Arctic, the Southern Ocean, and the Himalayas.
-              </p>
+          <div className="space-y-6 max-w-4xl mx-auto py-2">
+            <div className="rounded-2xl overflow-hidden shadow-xl border border-slate-800 bg-slate-950">
+              <HeroWave
+                extendLeftPx={200}
+                title="Ask POLARIS AI"
+                subtitle="Explore polar science, datasets, expeditions, and stations across Antarctica, the Arctic, the Southern Ocean, and the Himalayas."
+                placeholder="Ask about datasets, expeditions, stations, or polar research..."
+                buttonText="Ask AI"
+                onPromptSubmit={(promptText) => handleSend(promptText)}
+                style={{ height: '380px', minHeight: '380px' }}
+              />
             </div>
 
             <SuggestedQuestions onSelect={(q) => handleSend(q)} />
@@ -203,7 +206,7 @@ export const AssistantChat: React.FC<AssistantChatProps> = ({ initialContext, on
       </div>
 
       {/* Input Bar Form */}
-      <div className="p-4 bg-white border-t border-slate-200 shrink-0">
+      <div className="p-4 bg-white/70 backdrop-blur-md border-t border-slate-200/80 shrink-0">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -225,7 +228,7 @@ export const AssistantChat: React.FC<AssistantChatProps> = ({ initialContext, on
                 ? `Ask a question about ${currentContext.title || currentContext.id}...`
                 : "Ask about datasets, expeditions, stations, or polar research..."
             }
-            className="flex-1 px-4 py-3 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400 text-xs sm:text-sm font-sans focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all disabled:opacity-50"
+            className="flex-1 px-4 py-3 bg-white/80 border border-slate-300/80 rounded-xl text-slate-900 placeholder:text-slate-500 text-xs sm:text-sm font-sans focus:outline-none focus:ring-2 focus:ring-sky-500 focus:bg-white transition-all disabled:opacity-50 shadow-2xs"
           />
           <button
             type="submit"

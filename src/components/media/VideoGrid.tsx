@@ -23,7 +23,7 @@ export const VideoGrid: React.FC = () => {
   };
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+    <div className="bg-white/70 backdrop-blur-xl border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-lg space-y-6">
       
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
@@ -50,7 +50,7 @@ export const VideoGrid: React.FC = () => {
           <div
             key={vid.id}
             onClick={() => handleOpenVideo(vid)}
-            className="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden shadow-2xs hover:shadow-md hover:border-rose-300 transition-all cursor-pointer group flex flex-col justify-between"
+            className="bg-white/75 backdrop-blur-md border border-slate-200/80 rounded-xl overflow-hidden shadow-2xs hover:shadow-md hover:border-rose-300 transition-all cursor-pointer group flex flex-col justify-between"
           >
             <div>
               {/* Thumbnail with Play Icon / Status */}
