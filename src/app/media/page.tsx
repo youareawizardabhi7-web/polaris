@@ -4,7 +4,6 @@ import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { 
   MOCK_NEWS_ARTICLES, 
-  MOCK_EXPEDITION_UPDATES, 
   MOCK_VIDEOS, 
   MOCK_PHOTO_STORIES, 
   MOCK_EVENTS,
@@ -13,7 +12,6 @@ import {
 } from '@/lib/data/media';
 import { FeaturedNews } from '@/components/media/FeaturedNews';
 import { NewsCard } from '@/components/media/NewsCard';
-import { ExpeditionUpdatesList } from '@/components/media/ExpeditionUpdatesList';
 import { VideoGrid } from '@/components/media/VideoGrid';
 import { PhotoGalleryModal } from '@/components/media/PhotoGalleryModal';
 import { MediaCategoryBadge } from '@/components/media/MediaCategoryBadge';
@@ -41,7 +39,6 @@ export default function MediaPage() {
   const categories: MediaCategory[] = [
     'All',
     'News',
-    'Expedition Updates',
     'Announcements',
     'Research Highlights',
     'Events',
@@ -270,11 +267,6 @@ export default function MediaPage() {
               </div>
             )}
           </section>
-        )}
-
-        {/* Section 3: Expedition Updates */}
-        {(activeCategory === 'All' || activeCategory === 'Expedition Updates') && (
-          <ExpeditionUpdatesList />
         )}
 
         {/* Section 4: Polar Science Videos */}

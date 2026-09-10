@@ -1,8 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
-import { Compass, ShieldCheck, Database, Globe, FileText, ExternalLink, Mail, Phone, MapPin } from 'lucide-react';
 
 export default function AboutPage() {
   return (
@@ -11,11 +9,6 @@ export default function AboutPage() {
         
         {/* About Hero Header */}
         <div className="bg-slate-950/40 backdrop-blur-xl border border-slate-800/60 rounded-2xl p-8 sm:p-12 shadow-2xl space-y-4">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-900 text-sky-300 border border-slate-700 text-xs font-mono font-bold">
-            <Compass className="w-4 h-4 text-sky-300" />
-            <span>National Polar Data Infrastructure</span>
-          </div>
-
           <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
             About POLARIS Portal
           </h1>
@@ -58,76 +51,6 @@ export default function AboutPage() {
               <p className="leading-relaxed">
                 Deep ocean CTD hydrography, dissolved inorganic carbon inventories, Subtropical-Polar Front dynamics, and marine phytoplankton ecology collected during annual ORV Sagar Kanya cruises.
               </p>
-            </div>
-          </div>
-        </div>
-
-        {/* FAIR Principles & Metadata Standards Section */}
-        <div id="fair-principles" className="bg-white/70 backdrop-blur-md border border-slate-200/80 rounded-2xl p-8 shadow-sm space-y-6">
-          <div className="flex items-center space-x-2 text-xs font-mono uppercase font-bold text-emerald-700">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>Open Science Standards</span>
-          </div>
-
-          <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-            FAIR Data Compliance & Metadata ISO 19115
-          </h2>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-mono">
-            <div className="p-4 bg-emerald-50/70 backdrop-blur-xs border border-emerald-200/80 rounded-xl space-y-1 hover:bg-emerald-50/90 transition-colors">
-              <strong className="text-emerald-900 font-bold block text-base">F — Findable</strong>
-              <p className="text-emerald-800 text-[11px]">All datasets assigned unique persistent DOIs and GCMD DIF metadata tags.</p>
-            </div>
-
-            <div className="p-4 bg-emerald-50/70 backdrop-blur-xs border border-emerald-200/80 rounded-xl space-y-1 hover:bg-emerald-50/90 transition-colors">
-              <strong className="text-emerald-900 font-bold block text-base">A — Accessible</strong>
-              <p className="text-emerald-800 text-[11px]">Open HTTP protocol access, REST APIs, and direct NetCDF/CSV package downloads.</p>
-            </div>
-
-            <div className="p-4 bg-emerald-50/70 backdrop-blur-xs border border-emerald-200/80 rounded-xl space-y-1 hover:bg-emerald-50/90 transition-colors">
-              <strong className="text-emerald-900 font-bold block text-base">I — Interoperable</strong>
-              <p className="text-emerald-800 text-[11px]">Structured in CF-compliant NetCDF4, GeoJSON, and WMO standard schemas.</p>
-            </div>
-
-            <div className="p-4 bg-emerald-50/70 backdrop-blur-xs border border-emerald-200/80 rounded-xl space-y-1 hover:bg-emerald-50/90 transition-colors">
-              <strong className="text-emerald-900 font-bold block text-base">R — Reusable</strong>
-              <p className="text-emerald-800 text-[11px]">Released under Creative Commons CC-BY 4.0 open scientific data license.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* REST API & Data Access Policy */}
-        <div id="api" className="bg-slate-900/80 backdrop-blur-md text-white rounded-2xl p-8 shadow-xl space-y-4 border border-slate-800/80">
-          <h2 className="text-lg font-bold font-mono text-sky-400 uppercase tracking-wider">
-            RESTful Data API Reference (v1)
-          </h2>
-          <p className="text-xs text-slate-300">
-            Programmatic endpoint for automated dataset query, metadata retrieval, and time-series extraction.
-          </p>
-
-          <div className="bg-slate-950/80 backdrop-blur-xs p-4 rounded-xl font-mono text-xs text-sky-300 space-y-2 border border-slate-800 overflow-x-auto">
-            <p className="text-slate-400"># Query datasets by region and parameter</p>
-            <p>GET https://data.ncpor.res.in/api/v1/datasets?region=Antarctica&parameter=temperature</p>
-            <p className="text-slate-400 pt-2"># Fetch dataset detail & sample JSON</p>
-            <p>GET https://data.ncpor.res.in/api/v1/datasets/POL-ANT-2024-001</p>
-          </div>
-        </div>
-
-        {/* Contact Information */}
-        <div className="bg-white/70 backdrop-blur-md border border-slate-200/80 rounded-2xl p-8 shadow-sm space-y-4 text-xs font-mono">
-          <h2 className="text-lg font-bold text-slate-900 font-sans">NCPOR Data Centre Contact</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-slate-700">
-            <div className="flex items-center space-x-2">
-              <MapPin className="w-4 h-4 text-sky-600" />
-              <span>Headland Sada, Vasco-da-Gama, Goa 403804, India</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Mail className="w-4 h-4 text-sky-600" />
-              <span>polar-data@ncpor.res.in</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Phone className="w-4 h-4 text-sky-600" />
-              <span>+91-832-2525600</span>
             </div>
           </div>
         </div>

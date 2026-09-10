@@ -7,6 +7,7 @@ import { fetchDatasets } from '@/lib/api/portal';
 import { DatasetCard } from '@/components/datasets/DatasetCard';
 import { DatasetFilters } from '@/components/datasets/DatasetFilters';
 import { NLQuerySearch } from '@/components/datasets/NLQuerySearch';
+import Carousel from '@/components/ui/specials-linear-carousel';
 import { FilterState, PolarRegion, ScientificDiscipline, DataFormat, DatasetItem } from '@/types/portal';
 import { Search, Sparkles, LayoutGrid, List, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
 
@@ -202,13 +203,24 @@ function DatasetsExplorerContent() {
 
               </div>
 
-              {/* Dataset Cards Grid */}
+              {/* Dataset Cards */}
               {filteredDatasets.length > 0 ? (
-                <div className={viewStyle === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 gap-6' : 'space-y-4'}>
-                  {filteredDatasets.map((ds) => (
-                    <DatasetCard key={ds.id} dataset={ds} />
-                  ))}
-                </div>
+                viewStyle === 'grid' ? (
+                  <Carousel
+                    autoplay={false}
+                    items={filteredDatasets.map((ds) => (
+                      <div key={ds.id} className="w-[320px] sm:w-[380px] shrink-0">
+                        <DatasetCard dataset={ds} />
+                      </div>
+                    ))}
+                  />
+                ) : (
+                  <div className="space-y-4">
+                    {filteredDatasets.map((ds) => (
+                      <DatasetCard key={ds.id} dataset={ds} />
+                    ))}
+                  </div>
+                )
               ) : (
                 /* Empty state */
                 <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center space-y-4">
