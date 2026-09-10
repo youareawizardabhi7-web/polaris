@@ -15,15 +15,9 @@ export const Footer: React.FC = () => {
           
           {/* Brand & Organization Information */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-lg bg-sky-900/60 border border-sky-600/40 flex items-center justify-center text-sky-400">
-                <Compass className="w-6 h-6 text-sky-300" />
-              </div>
-              <div>
-                <span className="font-bold text-xl tracking-tight text-white font-mono">POLARIS</span>
-                <p className="text-xs text-sky-300 font-medium">Polar Science Data Discovery Portal</p>
-              </div>
-            </div>
+            <Link href="/" className="inline-block">
+              <span className="font-extrabold text-2xl tracking-wider text-white font-mono">POLARIS</span>
+            </Link>
 
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
               Inspired by India's polar science data ecosystem. Open-access prototype portal for polar research, station telemetry, and scientific dataset visualization.

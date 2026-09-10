@@ -4,12 +4,12 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
-  Compass, 
   Search, 
   UserCheck, 
   Menu, 
   X,
-  Sidebar
+  Sidebar,
+  Compass
 } from 'lucide-react';
 import { LineSidebar } from '@/components/ui/LineSidebar';
 import { getSidebarNavLinks } from '@/components/layout/VerticalSidebar';
@@ -50,22 +50,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="hidden sm:inline font-mono">Menu</span>
             </button>
 
-            {/* Brand Logo & Subtitle */}
-            <Link href="/" className="flex items-center space-x-3 group">
-              <div className="w-10 h-10 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center text-sky-400 shadow-sm group-hover:border-sky-400 transition-all">
-                <Compass className="w-6 h-6 text-sky-400 group-hover:rotate-45 transition-transform duration-300" />
-              </div>
-              <div className="flex flex-col">
-                <div className="flex items-center space-x-2">
-                  <span className="font-bold text-xl tracking-tight text-white font-mono">POLARIS</span>
-                  <span className="text-[10px] uppercase font-bold bg-sky-950 text-sky-300 px-1.5 py-0.5 rounded border border-sky-800">
-                    v2.0
-                  </span>
-                </div>
-                <span className="text-xs text-slate-300 font-medium tracking-tight">
-                  Polar Science Data Discovery Portal
-                </span>
-              </div>
+            {/* Brand Logo */}
+            <Link href="/" className="flex items-center group">
+              <span className="font-bold text-xl sm:text-2xl tracking-wider text-white font-mono">POLARIS</span>
             </Link>
           </div>
 

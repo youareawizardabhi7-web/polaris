@@ -151,7 +151,7 @@ function DatasetsExplorerContent() {
             <div className="lg:col-span-8 space-y-6">
               
               {/* Search Bar & Controls Bar */}
-              <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="bg-white/70 backdrop-blur-md border border-slate-200/80 rounded-xl p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
                 
                 {/* Inline Search Input */}
                 <div className="relative w-full sm:w-72">
@@ -161,7 +161,7 @@ function DatasetsExplorerContent() {
                     value={filters.searchQuery}
                     onChange={(e) => setFilters({ ...filters, searchQuery: e.target.value })}
                     placeholder="Search titles, stations..."
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-9 pr-3 py-2 text-xs font-medium text-slate-900 focus:outline-none focus:border-sky-500"
+                    className="w-full bg-white/60 backdrop-blur-xs border border-slate-200/80 rounded-lg pl-9 pr-3 py-2 text-xs font-medium text-slate-900 focus:outline-none focus:border-sky-500 focus:bg-white/80 transition-colors"
                   />
                 </div>
 
